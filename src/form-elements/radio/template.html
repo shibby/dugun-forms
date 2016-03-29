@@ -1,0 +1,12 @@
+<div class="radio" ng-repeat="option in options">
+    <label>
+        <input
+            type="radio"
+            ng-model="$parent.model"
+            ng-value="option.id"
+            ng-required="{{ required ? true : false }}"
+            name="{{ name }}"
+        >
+        {{ option.name }}
+    </label>
+</div>
