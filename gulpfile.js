@@ -4,7 +4,8 @@ var gulp = require('gulp'),
     ngHtml2Js = require('gulp-ng-html2js'),
     htmlmin = require('gulp-htmlmin'),
     htmlhint = require('gulp-htmlhint'),
-    pipes = {};
+    pipes = {},
+    KarmaServer = require('karma').Server;
 
 pipes.buildJS = function() {
     console.info('Building JS');
@@ -37,8 +38,16 @@ pipes.htmlSources = function() {
     return gulp.src(source);
 };
 
+pipes.test = function(done) {
+    new KarmaServer({
+        configFile: __dirname + '/karma.conf.js',
+    }, done).start();
+}
+
 gulp.task('build-js', pipes.buildJS);
 gulp.task('build-html', pipes.buildHTML);
 gulp.task('build', ['build-js', 'build-html'], function() {
     console.info('Building');
 });
+
+gulp.task('test', pipes.test);
