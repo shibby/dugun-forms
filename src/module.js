@@ -4,4 +4,8 @@
  * @description
  * Form elements from directives
  */
-angular.module('dugun.forms', []);
+angular.module('dugun.forms', [
+    'ui.mask',
+    'daterangepicker',
+    'moment',
+]);
