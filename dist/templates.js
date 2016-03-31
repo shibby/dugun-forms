@@ -29,6 +29,18 @@ try {
   module = angular.module('dugun.forms', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('form-elements/checkbox/multiple.html',
+    '<div ng-repeat="option in options"><input type="checkbox" ng-model="option.selected"> {{ option.name }}</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('dugun.forms');
+} catch (e) {
+  module = angular.module('dugun.forms', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/checkbox/template.html',
     '<div class="checkbox"><label><input type="checkbox" ng-model="model" ng-true-value="{{ trueValue }}" ng-false-value="{{ falseValue }}" name="{{ name }}" ng-required="{{ required ? true : false }}"> {{ label }}</label></div>');
 }]);
