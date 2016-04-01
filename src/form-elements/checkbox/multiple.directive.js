@@ -10,7 +10,8 @@ function DgFormCheckboxMultiple() {
         scope: {
             model: '=ngModel',
             options: '=',
-            name: '@dgName'
+            name: '@dgName',
+            html: '&'
         },
         templateUrl: 'form-elements/checkbox/multiple.html',
         link: function(scope) {

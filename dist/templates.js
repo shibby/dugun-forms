@@ -30,7 +30,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/checkbox/multiple.html',
-    '<div class="checkbox" ng-repeat="option in options"><label><input type="checkbox" ng-model="option.selected"> <span class="text" ng-bind="option.name"></span></label></div>');
+    '<div class="checkbox" ng-repeat="option in options"><label><input type="checkbox" ng-model="option.selected"> <span ng-if="!html()" class="text" ng-bind="option.name"></span> <span ng-if="html()" class="text" ng-bind-html="option.name"></span></label></div>');
 }]);
 })();
 
