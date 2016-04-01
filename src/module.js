@@ -7,5 +7,5 @@
 angular.module('dugun.forms', [
     'ui.mask',
     'daterangepicker',
-    'moment',
+    'angularMoment',
 ]);
