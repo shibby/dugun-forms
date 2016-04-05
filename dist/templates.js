@@ -29,6 +29,18 @@ try {
   module = angular.module('dugun.forms', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('form-elements/date-range/date-range.html',
+    '<input date-range-picker class="form-control full-width date-picker" type="text" ng-model="dates" min="min" max="max" options="options" placeholder="{{ placeholder }}" clearable="clearable">');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('dugun.forms');
+} catch (e) {
+  module = angular.module('dugun.forms', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/checkbox/multiple.html',
     '<div class="checkbox" ng-repeat="option in options"><label><input type="checkbox" ng-model="option.selected"> <span ng-if="!html()" class="text" ng-bind="option.name"></span> <span ng-if="html()" class="text" ng-bind-html="option.name"></span></label></div>');
 }]);
@@ -42,19 +54,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/checkbox/template.html',
-    '<div class="checkbox"><label><input type="checkbox" ng-model="model" ng-true-value="{{ trueValue }}" ng-false-value="{{ falseValue }}" name="{{ name }}" ng-required="{{ required ? true : false }}"> <span ng-if="!labelTemplate">{{ label }}</span> <span ng-if="labelTemplate" ng-include="{{ labelTemplate }}"></span></label></div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('dugun.forms');
-} catch (e) {
-  module = angular.module('dugun.forms', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/date-range/date-range.html',
-    '<input date-range-picker class="form-control full-width date-picker" type="text" ng-model="dates" min="min" max="max" options="options" placeholder="{{ placeholder }}" clearable="clearable">');
+    '<div class="checkbox"><label><input type="checkbox" ng-model="model" ng-true-value="{{ trueValue }}" ng-false-value="{{ falseValue }}" name="{{ name }}" ng-required="{{ required ? true : false }}"> <span ng-if="!labelTemplate">{{ label }}</span> <span ng-if="labelTemplate" ng-include="labelTemplate"></span></label></div>');
 }]);
 })();
 
