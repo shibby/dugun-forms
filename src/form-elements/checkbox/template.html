@@ -1,5 +1,5 @@
 <div class="checkbox">
-    <label ng-if="!html()">
+    <label>
         <input
             type="checkbox"
             ng-model="model"
@@ -8,17 +8,7 @@
             name="{{ name }}"
             ng-required="{{ required ? true : false }}"
         >
-        {{ label }}
+        <span ng-if="!labelTemplate">{{ label }}</span>
+        <span ng-if="labelTemplate" ng-include="labelTemplate"></span>
     </label>
-        <label ng-if="html()">
-            <input
-                type="checkbox"
-                ng-model="model"
-                ng-true-value="{{ trueValue }}"
-                ng-false-value="{{ falseValue }}"
-                name="{{ name }}"
-                ng-required="{{ required ? true : false }}"
-            >
-            <span ng-bind-html="label"></span>
-        </label>
 </div>

@@ -13,6 +13,22 @@ angular.module('dugun.forms', [
 
 /**
  * @ngdoc directive
+ * @name dugun.forms:dgFormRequiredAsterisk
+ * @restrict 'E'
+ * @scope
+ **/
+function DgFormRequiredAsterisk() {
+    return {
+        restrict: 'ACE',
+        templateUrl: 'form-elements/required-asterisk/required-asterisk.html',
+        replace: true
+    };
+}
+
+angular.module('dugun.forms').directive('dgFormRequiredAsterisk', DgFormRequiredAsterisk);
+
+/**
+ * @ngdoc directive
  * @name dgFormTextarea
  * @restrict 'E'
  * @scope
@@ -104,22 +120,6 @@ function DgFormSelect2Multiple() {
 
 angular.module('dugun.forms')
     .directive('dgFormSelect2Multiple', DgFormSelect2Multiple);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:dgFormRequiredAsterisk
- * @restrict 'E'
- * @scope
- **/
-function DgFormRequiredAsterisk() {
-    return {
-        restrict: 'ACE',
-        templateUrl: 'form-elements/required-asterisk/required-asterisk.html',
-        replace: true
-    };
-}
-
-angular.module('dugun.forms').directive('dgFormRequiredAsterisk', DgFormRequiredAsterisk);
 
 /**
  * @ngdoc directive
@@ -217,7 +217,7 @@ function DgFormCheckboxMultiple() {
             model: '=ngModel',
             options: '=',
             name: '@dgName',
-            html: '&'
+            labelTemplate: '@'
         },
         templateUrl: 'form-elements/checkbox/multiple.html',
         link: function(scope) {
