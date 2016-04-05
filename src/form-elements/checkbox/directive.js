@@ -14,7 +14,7 @@ function DgFormCheckbox() {
             falseValue: '=',
             name: '@dgName',
             label: '@',
-            html: '&'
+            labelTemplate: '@'
         },
         templateUrl: 'form-elements/checkbox/template.html'
     };
