@@ -213,6 +213,7 @@ angular.module('dugun.forms').directive('dgFormDateRange', DgFormDateRange);
 function DgFormCheckboxMultiple() {
     return {
         restrict: 'ACE',
+        transclude: true,
         scope: {
             model: '=ngModel',
             options: '=',
@@ -273,6 +274,7 @@ angular.module('dugun.forms').directive('dgFormCheckboxMultiple', DgFormCheckbox
 function DgFormCheckbox() {
     return {
         restrict: 'ACE',
+        transclude: true,
         scope: {
             model: '=ngModel',
             required: '=ngRequired',

@@ -7,6 +7,7 @@
 function DgFormCheckbox() {
     return {
         restrict: 'ACE',
+        transclude: true,
         scope: {
             model: '=ngModel',
             required: '=ngRequired',
