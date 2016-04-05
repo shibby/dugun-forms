@@ -42,7 +42,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/checkbox/template.html',
-    '<div class="checkbox"><label><input type="checkbox" ng-model="model" ng-true-value="{{ trueValue }}" ng-false-value="{{ falseValue }}" name="{{ name }}" ng-required="{{ required ? true : false }}"> {{ label }}</label></div>');
+    '<div class="checkbox"><label ng-if="!html()"><input type="checkbox" ng-model="model" ng-true-value="{{ trueValue }}" ng-false-value="{{ falseValue }}" name="{{ name }}" ng-required="{{ required ? true : false }}"> {{ label }}</label><label ng-if="html()"><input type="checkbox" ng-model="model" ng-true-value="{{ trueValue }}" ng-false-value="{{ falseValue }}" name="{{ name }}" ng-required="{{ required ? true : false }}"> <span ng-bind-html="label"></span></label></div>');
 }]);
 })();
 

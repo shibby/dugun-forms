@@ -13,7 +13,8 @@ function DgFormCheckbox() {
             trueValue: '=',
             falseValue: '=',
             name: '@dgName',
-            label: '@'
+            label: '@',
+            html: '&'
         },
         templateUrl: 'form-elements/checkbox/template.html'
     };
