@@ -7,6 +7,7 @@
 function DgFormRadio() {
     return {
         restrict: 'ACE',
+        transclude: true,
         scope: {
             model: '=ngModel',
             options: '=',

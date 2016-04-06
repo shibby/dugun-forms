@@ -130,6 +130,7 @@ angular.module('dugun.forms').directive('dgFormRequiredAsterisk', DgFormRequired
 function DgFormRadio() {
     return {
         restrict: 'ACE',
+        transclude: true,
         scope: {
             model: '=ngModel',
             options: '=',
