@@ -29,18 +29,6 @@ try {
   module = angular.module('dugun.forms', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/date-range/date-range.html',
-    '<input date-range-picker class="form-control full-width date-picker" type="text" ng-model="dates" min="min" max="max" options="options" placeholder="{{ placeholder }}" clearable="clearable">');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('dugun.forms');
-} catch (e) {
-  module = angular.module('dugun.forms', []);
-}
-module.run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/checkbox/multiple.html',
     '<div class="checkbox" ng-repeat="option in options"><label><input type="checkbox" ng-model="option.selected"> <span ng-if="!html()" class="text" ng-bind="option.name"></span> <span ng-if="html()" class="text" ng-bind-html="option.name"></span></label></div>');
 }]);
@@ -65,8 +53,20 @@ try {
   module = angular.module('dugun.forms', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('form-elements/date-range/date-range.html',
+    '<input date-range-picker class="form-control full-width date-picker" type="text" ng-model="dates" min="min" max="max" options="options" placeholder="{{ placeholder }}" clearable="clearable">');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('dugun.forms');
+} catch (e) {
+  module = angular.module('dugun.forms', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/radio/template.html',
-    '<div class="radio" ng-repeat="option in options"><label><input type="radio" ng-model="$parent.model" ng-value="option.id" ng-required="{{ required ? true : false }}" name="{{ name }}"> {{ option.name }}</label></div>');
+    '<div class="radio" ng-repeat="option in options"><label><input type="radio" ng-model="$parent.model" ng-value="option.id" ng-required="{{ required ? true : false }}" name="{{ name }}"> <span ng-bind="option.name"></span></label></div>');
 }]);
 })();
 
