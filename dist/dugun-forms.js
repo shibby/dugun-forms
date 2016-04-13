@@ -53,7 +53,10 @@ function DgFormText() {
             mask: '@',
             disableLength: '&'
         },
-        templateUrl: 'form-elements/text-input/text-input.html'
+        templateUrl: 'form-elements/text-input/text-input.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+        }
     };
 }
 
@@ -107,22 +110,6 @@ angular.module('dugun.forms')
 
 /**
  * @ngdoc directive
- * @name dugun.forms:dgFormRequiredAsterisk
- * @restrict 'E'
- * @scope
- **/
-function DgFormRequiredAsterisk() {
-    return {
-        restrict: 'ACE',
-        templateUrl: 'form-elements/required-asterisk/required-asterisk.html',
-        replace: true
-    };
-}
-
-angular.module('dugun.forms').directive('dgFormRequiredAsterisk', DgFormRequiredAsterisk);
-
-/**
- * @ngdoc directive
  * @name dugun.forms:dgFormRadio
  * @restrict 'ACE'
  * @scope
@@ -142,6 +129,84 @@ function DgFormRadio() {
 }
 
 angular.module('dugun.forms').directive('dgFormRadio', DgFormRadio);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormRequiredAsterisk
+ * @restrict 'E'
+ * @scope
+ **/
+function DgFormRequiredAsterisk() {
+    return {
+        restrict: 'ACE',
+        templateUrl: 'form-elements/required-asterisk/required-asterisk.html',
+        replace: true
+    };
+}
+
+angular.module('dugun.forms').directive('dgFormRequiredAsterisk', DgFormRequiredAsterisk);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormBoolean
+ * @restrict 'ACE'
+ * @scope
+ **/
+function DgFormBoolean() {
+    return {
+        restrict: 'ACE',
+        scope: {
+            model: '=ngModel',
+            allowClear: '@',
+            labelTrue: '@',
+            labelFalse: '@'
+        },
+        templateUrl: 'form-elements/boolean/boolean.html'
+    };
+}
+
+angular.module('dugun.forms')
+    .directive('dgFormBoolean', DgFormBoolean);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormBooleanSelect
+ * @restrict 'ACE'
+ * @scope
+ **/
+function DgFormBooleanSelect() {
+    return {
+        restrict: 'ACE',
+        scope: {
+            model: '=ngModel',
+            allowClear: '@',
+            labelTrue: '@',
+            labelFalse: '@',
+            valueTrue: '&',
+            valueFalse: '&',
+            required: '=ngRequired',
+            placeholder: '@'
+        },
+        templateUrl: 'form-elements/boolean/boolean-select.html',
+        link: function(scope) {
+            var options = [];
+
+            options.push({
+                id: typeof scope.valueTrue() === 'undefined' ? true : scope.valueTrue(),
+                name: scope.labelTrue
+            });
+            options.push({
+                id: typeof scope.valueFalse() === 'undefined' ? false : scope.valueFalse(),
+                name: scope.labelFalse
+            });
+
+            scope.options = options;
+        }
+    };
+}
+
+angular.module('dugun.forms')
+    .directive('dgFormBooleanSelect', DgFormBooleanSelect);
 
 /**
  * @ngdoc directive
@@ -290,65 +355,3 @@ function DgFormCheckbox() {
 }
 
 angular.module('dugun.forms').directive('dgFormCheckbox', DgFormCheckbox);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:dgFormBoolean
- * @restrict 'ACE'
- * @scope
- **/
-function DgFormBoolean() {
-    return {
-        restrict: 'ACE',
-        scope: {
-            model: '=ngModel',
-            allowClear: '@',
-            labelTrue: '@',
-            labelFalse: '@'
-        },
-        templateUrl: 'form-elements/boolean/boolean.html'
-    };
-}
-
-angular.module('dugun.forms')
-    .directive('dgFormBoolean', DgFormBoolean);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:dgFormBooleanSelect
- * @restrict 'ACE'
- * @scope
- **/
-function DgFormBooleanSelect() {
-    return {
-        restrict: 'ACE',
-        scope: {
-            model: '=ngModel',
-            allowClear: '@',
-            labelTrue: '@',
-            labelFalse: '@',
-            valueTrue: '&',
-            valueFalse: '&',
-            required: '=ngRequired',
-            placeholder: '@'
-        },
-        templateUrl: 'form-elements/boolean/boolean-select.html',
-        link: function(scope) {
-            var options = [];
-
-            options.push({
-                id: typeof scope.valueTrue() === 'undefined' ? true : scope.valueTrue(),
-                name: scope.labelTrue
-            });
-            options.push({
-                id: typeof scope.valueFalse() === 'undefined' ? false : scope.valueFalse(),
-                name: scope.labelFalse
-            });
-
-            scope.options = options;
-        }
-    };
-}
-
-angular.module('dugun.forms')
-    .directive('dgFormBooleanSelect', DgFormBooleanSelect);

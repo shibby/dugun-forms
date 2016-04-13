@@ -17,7 +17,10 @@ function DgFormText() {
             mask: '@',
             disableLength: '&'
         },
-        templateUrl: 'form-elements/text-input/text-input.html'
+        templateUrl: 'form-elements/text-input/text-input.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+        }
     };
 }
 
