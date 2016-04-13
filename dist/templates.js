@@ -114,7 +114,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/text-input/text-input.html',
-    '<input type="{{ type || \'text\' }}" class="form-control full-width" ng-if="!maxlength || disableLength" ng-model="$parent.model" ng-required="required" ng-attr-placeholder="{{ placeholder }}" ui-mask="{{ mask || \'\' }}"><div class="input-group" ng-if="maxlength && !disableLength"><input type="{{ type || \'text\' }}" class="form-control" ng-model="$parent.model" ng-required="required" ng-attr-id="{{ dgId }}" ng-attr-placeholder="{{ placeholder }}" ng-attr-maxlength="{{ maxlength }}"><div class="input-group-addon" ng-bind="maxlength - model.length"></div></div>');
+    '<input type="{{ type || \'text\' }}" class="form-control full-width" ng-if="!maxlength || disableLength" ng-model="$parent.model" ng-required="required" ng-attr-placeholder="{{ placeholder }}" ui-mask="{{ mask || \'\' }}" ng-attr-maxlength="{{ maxlength }}"><div class="input-group" ng-if="maxlength && !disableLength"><input type="{{ type || \'text\' }}" class="form-control" ng-model="$parent.model" ng-required="required" ng-attr-id="{{ dgId }}" ng-attr-placeholder="{{ placeholder }}" ng-attr-maxlength="{{ maxlength }}"><div class="input-group-addon" ng-bind="maxlength - model.length"></div></div>');
 }]);
 })();
 
