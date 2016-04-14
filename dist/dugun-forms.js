@@ -13,141 +13,6 @@ angular.module('dugun.forms', [
 
 /**
  * @ngdoc directive
- * @name dgFormTextarea
- * @restrict 'E'
- * @scope
- **/
-function DgFormTextarea() {
-    return {
-        restrict: 'E',
-        scope: {
-            model: '=ngModel',
-            required: '=ngRequired',
-            maxlength: '@',
-            dgId: '@',
-            rows: '@',
-            style: "@"
-        },
-        templateUrl: 'form-elements/textarea/textarea.html'
-    };
-}
-
-angular.module('dugun.forms').directive('dgFormTextarea', DgFormTextarea);
-
-/**
- * @ngdoc directive
- * @name dgFormText
- * @restrict 'E'
- * @scope
- **/
-function DgFormText() {
-    return {
-        restrict: 'E',
-        scope: {
-            model: '=ngModel',
-            required: '=ngRequired',
-            maxlength: '@',
-            dgId: '@',
-            placeholder: '@',
-            type: '@',
-            mask: '@',
-            disableLength: '&'
-        },
-        templateUrl: 'form-elements/text-input/text-input.html',
-        link: function(scope, element, attrs) {
-            scope.attrs = attrs;
-        }
-    };
-}
-
-angular.module('dugun.forms').directive('dgFormText', DgFormText);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:dgFormSelect2
- * @restrict 'E'
- * @scope
- **/
-function DgFormSelect2() {
-    return {
-        restrict: 'E',
-        scope: {
-            model: '=ngModel',
-            options: '=',
-            allowClear: '@',
-            required: '=ngRequired',
-            placeholder: '@',
-            searchEnabled: '&'
-        },
-        templateUrl: 'form-elements/select2/select2.html'
-    };
-}
-
-angular.module('dugun.forms').directive('dgFormSelect2', DgFormSelect2);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:dgFormSelect2Multiple
- * @restrict 'E'
- * @scope
- **/
-function DgFormSelect2Multiple() {
-    return {
-        restrict: 'E',
-        scope: {
-            model: '=ngModel',
-            options: '=',
-            allowClear: '@',
-            required: '=ngRequired',
-            placeholder: '@'
-        },
-        templateUrl: 'form-elements/select2-multiple/select2-multiple.html'
-    };
-}
-
-angular.module('dugun.forms')
-    .directive('dgFormSelect2Multiple', DgFormSelect2Multiple);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:dgFormRadio
- * @restrict 'ACE'
- * @scope
- **/
-function DgFormRadio() {
-    return {
-        restrict: 'ACE',
-        transclude: true,
-        scope: {
-            model: '=ngModel',
-            options: '=',
-            required: '=ngRequired',
-            name: '@dgName'
-        },
-        templateUrl: 'form-elements/radio/template.html'
-    };
-}
-
-angular.module('dugun.forms').directive('dgFormRadio', DgFormRadio);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:dgFormRequiredAsterisk
- * @restrict 'E'
- * @scope
- **/
-function DgFormRequiredAsterisk() {
-    return {
-        restrict: 'ACE',
-        templateUrl: 'form-elements/required-asterisk/required-asterisk.html',
-        replace: true
-    };
-}
-
-angular.module('dugun.forms').directive('dgFormRequiredAsterisk', DgFormRequiredAsterisk);
-
-/**
- * @ngdoc directive
  * @name dugun.forms:dgFormBoolean
  * @restrict 'ACE'
  * @scope
@@ -207,6 +72,142 @@ function DgFormBooleanSelect() {
 
 angular.module('dugun.forms')
     .directive('dgFormBooleanSelect', DgFormBooleanSelect);
+
+/**
+ * @ngdoc directive
+ * @name dgFormTextarea
+ * @restrict 'E'
+ * @scope
+ **/
+function DgFormTextarea() {
+    return {
+        restrict: 'E',
+        scope: {
+            model: '=ngModel',
+            required: '=ngRequired',
+            maxlength: '@',
+            dgId: '@',
+            rows: '@',
+            style: "@"
+        },
+        templateUrl: 'form-elements/textarea/textarea.html'
+    };
+}
+
+angular.module('dugun.forms').directive('dgFormTextarea', DgFormTextarea);
+
+/**
+ * @ngdoc directive
+ * @name dgFormText
+ * @restrict 'E'
+ * @scope
+ **/
+function DgFormText() {
+    return {
+        restrict: 'E',
+        scope: {
+            model: '=ngModel',
+            required: '=ngRequired',
+            maxlength: '@',
+            dgId: '@',
+            placeholder: '@',
+            type: '@',
+            mask: '@',
+            disableLength: '&',
+            numberOnly: '&'
+        },
+        templateUrl: 'form-elements/text-input/text-input.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+        }
+    };
+}
+
+angular.module('dugun.forms').directive('dgFormText', DgFormText);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormSelect2
+ * @restrict 'E'
+ * @scope
+ **/
+function DgFormSelect2() {
+    return {
+        restrict: 'E',
+        scope: {
+            model: '=ngModel',
+            options: '=',
+            allowClear: '@',
+            required: '=ngRequired',
+            placeholder: '@',
+            searchEnabled: '&'
+        },
+        templateUrl: 'form-elements/select2/select2.html'
+    };
+}
+
+angular.module('dugun.forms').directive('dgFormSelect2', DgFormSelect2);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormSelect2Multiple
+ * @restrict 'E'
+ * @scope
+ **/
+function DgFormSelect2Multiple() {
+    return {
+        restrict: 'E',
+        scope: {
+            model: '=ngModel',
+            options: '=',
+            allowClear: '@',
+            required: '=ngRequired',
+            placeholder: '@'
+        },
+        templateUrl: 'form-elements/select2-multiple/select2-multiple.html'
+    };
+}
+
+angular.module('dugun.forms')
+    .directive('dgFormSelect2Multiple', DgFormSelect2Multiple);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormRequiredAsterisk
+ * @restrict 'E'
+ * @scope
+ **/
+function DgFormRequiredAsterisk() {
+    return {
+        restrict: 'ACE',
+        templateUrl: 'form-elements/required-asterisk/required-asterisk.html',
+        replace: true
+    };
+}
+
+angular.module('dugun.forms').directive('dgFormRequiredAsterisk', DgFormRequiredAsterisk);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormRadio
+ * @restrict 'ACE'
+ * @scope
+ **/
+function DgFormRadio() {
+    return {
+        restrict: 'ACE',
+        transclude: true,
+        scope: {
+            model: '=ngModel',
+            options: '=',
+            required: '=ngRequired',
+            name: '@dgName'
+        },
+        templateUrl: 'form-elements/radio/template.html'
+    };
+}
+
+angular.module('dugun.forms').directive('dgFormRadio', DgFormRadio);
 
 /**
  * @ngdoc directive

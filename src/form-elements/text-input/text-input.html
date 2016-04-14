@@ -10,6 +10,7 @@
     ng-attr-min="{{ attrs.min ? attrs.min : null }}"
     ng-attr-max="{{ attrs.max ? attrs.max : null }}"
     ng-attr-step="{{ attrs.step ? attrs.step : null }}"
+    number-only="{{ numberOnly() ? 'true' : '' }}"
 >
 
 <div class="input-group" ng-if="maxlength && !disableLength">
@@ -24,6 +25,7 @@
         ng-attr-min="{{ attrs.min ? attrs.min : null }}"
         ng-attr-max="{{ attrs.max ? attrs.max : null }}"
         ng-attr-step="{{ attrs.step ? attrs.step : null }}"
+        number-only="{{ numberOnly() ? 'true' : '' }}"
     >
     <div
         class="input-group-addon"
