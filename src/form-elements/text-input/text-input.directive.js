@@ -9,6 +9,7 @@ function DgFormText() {
         restrict: 'E',
         scope: {
             model: '=ngModel',
+            ngModelOptions: '=',
             required: '=ngRequired',
             maxlength: '@',
             dgId: '@',
