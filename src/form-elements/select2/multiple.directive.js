@@ -14,7 +14,7 @@ function DgFormSelect2Multiple() {
             required: '=ngRequired',
             placeholder: '@'
         },
-        templateUrl: 'form-elements/select2-multiple/select2-multiple.html'
+        templateUrl: 'form-elements/select2/multiple.html'
     };
 }
 

@@ -15,7 +15,7 @@ function DgFormSelect2() {
             placeholder: '@',
             searchEnabled: '&'
         },
-        templateUrl: 'form-elements/select2/select2.html'
+        templateUrl: 'form-elements/select2/single.html'
     };
 }
 
