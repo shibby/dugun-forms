@@ -81,7 +81,7 @@ function DgFormSelect2() {
             placeholder: '@',
             searchEnabled: '&'
         },
-        templateUrl: 'form-elements/select2/select2.html'
+        templateUrl: 'form-elements/select2/single.html'
     };
 }
 
@@ -103,28 +103,12 @@ function DgFormSelect2Multiple() {
             required: '=ngRequired',
             placeholder: '@'
         },
-        templateUrl: 'form-elements/select2-multiple/select2-multiple.html'
+        templateUrl: 'form-elements/select2/multiple.html'
     };
 }
 
 angular.module('dugun.forms')
     .directive('dgFormSelect2Multiple', DgFormSelect2Multiple);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:dgFormRequiredAsterisk
- * @restrict 'E'
- * @scope
- **/
-function DgFormRequiredAsterisk() {
-    return {
-        restrict: 'ACE',
-        templateUrl: 'form-elements/required-asterisk/required-asterisk.html',
-        replace: true
-    };
-}
-
-angular.module('dugun.forms').directive('dgFormRequiredAsterisk', DgFormRequiredAsterisk);
 
 /**
  * @ngdoc directive
@@ -147,6 +131,22 @@ function DgFormRadio() {
 }
 
 angular.module('dugun.forms').directive('dgFormRadio', DgFormRadio);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormRequiredAsterisk
+ * @restrict 'E'
+ * @scope
+ **/
+function DgFormRequiredAsterisk() {
+    return {
+        restrict: 'ACE',
+        templateUrl: 'form-elements/required-asterisk/required-asterisk.html',
+        replace: true
+    };
+}
+
+angular.module('dugun.forms').directive('dgFormRequiredAsterisk', DgFormRequiredAsterisk);
 
 /**
  * @ngdoc directive
