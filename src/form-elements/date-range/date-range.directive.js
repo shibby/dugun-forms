@@ -50,6 +50,8 @@ function DgFormDateRange(moment) {
 
             init();
             scope.$watch('dates', datesChanged, true);
+            scope.$watch('modelStart', init);
+            scope.$watch('modelEnd', init);
         }
     };
 }

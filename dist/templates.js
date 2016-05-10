@@ -5,30 +5,6 @@ try {
   module = angular.module('dugun.forms', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/boolean/boolean-select.html',
-    '<dg-form-select2 ng-model="model" options="options" placeholder="{{ placeholder }}" allow-clear="{{ allowClear }}" ng-required="required ? true : false"></dg-form-select2>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('dugun.forms');
-} catch (e) {
-  module = angular.module('dugun.forms', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/boolean/boolean.html',
-    '<label class="btn btn-default" ng-model="model" uncheckable="{{ allowClear }}" uib-btn-radio="true" ng-bind="labelTrue"></label><label class="btn btn-default" ng-model="model" uncheckable="{{ allowClear }}" uib-btn-radio="false" ng-bind="labelFalse"></label>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('dugun.forms');
-} catch (e) {
-  module = angular.module('dugun.forms', []);
-}
-module.run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/checkbox/multiple.html',
     '<div class="checkbox" ng-repeat="option in options"><label><input type="checkbox" ng-model="option.selected"> <span ng-if="!html()" class="text" ng-bind="option.name"></span> <span ng-if="html()" class="text" ng-bind-html="option.name"></span></label></div>');
 }]);
@@ -53,6 +29,30 @@ try {
   module = angular.module('dugun.forms', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('form-elements/boolean/boolean-select.html',
+    '<dg-form-select2 ng-model="model" options="options" placeholder="{{ placeholder }}" allow-clear="{{ allowClear }}" ng-required="required ? true : false"></dg-form-select2>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('dugun.forms');
+} catch (e) {
+  module = angular.module('dugun.forms', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('form-elements/boolean/boolean.html',
+    '<label class="btn btn-default" ng-model="model" uncheckable="{{ allowClear }}" uib-btn-radio="true" ng-bind="labelTrue"></label><label class="btn btn-default" ng-model="model" uncheckable="{{ allowClear }}" uib-btn-radio="false" ng-bind="labelFalse"></label>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('dugun.forms');
+} catch (e) {
+  module = angular.module('dugun.forms', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/date-range/date-range.html',
     '<input date-range-picker class="form-control full-width date-picker" type="text" ng-model="dates" min="min" max="max" options="options" placeholder="{{ placeholder }}" clearable="clearable">');
 }]);
@@ -65,8 +65,8 @@ try {
   module = angular.module('dugun.forms', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/required-asterisk/required-asterisk.html',
-    '<i class="fa fa-asterisk red"></i>');
+  $templateCache.put('form-elements/radio/template.html',
+    '<div class="radio" ng-repeat="option in options"><label><input type="radio" ng-model="$parent.model" ng-value="option.id" ng-required="{{ required ? true : false }}" name="{{ name }}"> <span ng-bind="option.name"></span></label></div>');
 }]);
 })();
 
@@ -77,8 +77,8 @@ try {
   module = angular.module('dugun.forms', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/radio/template.html',
-    '<div class="radio" ng-repeat="option in options"><label><input type="radio" ng-model="$parent.model" ng-value="option.id" ng-required="{{ required ? true : false }}" name="{{ name }}"> <span ng-bind="option.name"></span></label></div>');
+  $templateCache.put('form-elements/required-asterisk/required-asterisk.html',
+    '<i class="fa fa-asterisk red"></i>');
 }]);
 })();
 
