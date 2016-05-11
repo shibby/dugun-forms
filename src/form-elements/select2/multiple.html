@@ -8,7 +8,7 @@
     <ui-select-match placeholder="{{ placeholder }}" allow-clear="{{ allowClear }}">
         <div ng-bind="$item.name"></div>
     </ui-select-match>
-    <ui-select-choices repeat="item.id as item in options | propsFilter: {name: $select.search}">
+    <ui-select-choices repeat="item.id as item in options | props: {name: $select.search}">
         <p ng-bind-html="item.name | highlight: $select.search"></p>
     </ui-select-choices>
 </ui-select>
