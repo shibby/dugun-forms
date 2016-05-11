@@ -18,7 +18,9 @@ function DgFormDateRange(moment) {
             clearable: '='
         },
         templateUrl: 'form-elements/date-range/date-range.html',
-        link: function(scope) {
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+
             function datesChanged(newValue) {
                 if(!newValue) return;
                 if(newValue.startDate) {

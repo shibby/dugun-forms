@@ -15,7 +15,10 @@ function DgFormSelect2() {
             placeholder: '@',
             searchEnabled: '&'
         },
-        templateUrl: 'form-elements/select2/single.html'
+        templateUrl: 'form-elements/select2/single.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+        }
     };
 }
 

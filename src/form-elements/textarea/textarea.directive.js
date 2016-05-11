@@ -15,7 +15,10 @@ function DgFormTextarea() {
             rows: '@',
             style: "@"
         },
-        templateUrl: 'form-elements/textarea/textarea.html'
+        templateUrl: 'form-elements/textarea/textarea.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+        }
     };
 }
 

@@ -14,7 +14,9 @@ function DgFormDate(moment) {
             id: '@dgId'
         },
         templateUrl: 'form-elements/date/date.html',
-        link: function(scope) {
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+
             function dateChanged(newValue) {
                 if(!newValue) return;
                 if(newValue) {

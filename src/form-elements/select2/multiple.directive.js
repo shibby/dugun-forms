@@ -12,9 +12,13 @@ function DgFormSelect2Multiple() {
             options: '=',
             allowClear: '@',
             required: '=ngRequired',
-            placeholder: '@'
+            placeholder: '@',
+            searchEnabled: '&'
         },
-        templateUrl: 'form-elements/select2/multiple.html'
+        templateUrl: 'form-elements/select2/multiple.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+        }
     };
 }
 

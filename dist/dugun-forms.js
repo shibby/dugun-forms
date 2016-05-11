@@ -60,29 +60,6 @@ angular.module('dugun.forms', [
 
 /**
  * @ngdoc directive
- * @name dgFormTextarea
- * @restrict 'E'
- * @scope
- **/
-function DgFormTextarea() {
-    return {
-        restrict: 'E',
-        scope: {
-            model: '=ngModel',
-            required: '=ngRequired',
-            maxlength: '@',
-            dgId: '@',
-            rows: '@',
-            style: "@"
-        },
-        templateUrl: 'form-elements/textarea/textarea.html'
-    };
-}
-
-angular.module('dugun.forms').directive('dgFormTextarea', DgFormTextarea);
-
-/**
- * @ngdoc directive
  * @name dgFormText
  * @restrict 'E'
  * @scope
@@ -113,6 +90,32 @@ angular.module('dugun.forms').directive('dgFormText', DgFormText);
 
 /**
  * @ngdoc directive
+ * @name dgFormTextarea
+ * @restrict 'E'
+ * @scope
+ **/
+function DgFormTextarea() {
+    return {
+        restrict: 'E',
+        scope: {
+            model: '=ngModel',
+            required: '=ngRequired',
+            maxlength: '@',
+            dgId: '@',
+            rows: '@',
+            style: "@"
+        },
+        templateUrl: 'form-elements/textarea/textarea.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+        }
+    };
+}
+
+angular.module('dugun.forms').directive('dgFormTextarea', DgFormTextarea);
+
+/**
+ * @ngdoc directive
  * @name dugun.forms:dgFormSelect2
  * @restrict 'E'
  * @scope
@@ -128,7 +131,10 @@ function DgFormSelect2() {
             placeholder: '@',
             searchEnabled: '&'
         },
-        templateUrl: 'form-elements/select2/single.html'
+        templateUrl: 'form-elements/select2/single.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+        }
     };
 }
 
@@ -148,9 +154,13 @@ function DgFormSelect2Multiple() {
             options: '=',
             allowClear: '@',
             required: '=ngRequired',
-            placeholder: '@'
+            placeholder: '@',
+            searchEnabled: '&'
         },
-        templateUrl: 'form-elements/select2/multiple.html'
+        templateUrl: 'form-elements/select2/multiple.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+        }
     };
 }
 
@@ -215,7 +225,9 @@ function DgFormDateRange(moment) {
             clearable: '='
         },
         templateUrl: 'form-elements/date-range/date-range.html',
-        link: function(scope) {
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+
             function datesChanged(newValue) {
                 if(!newValue) return;
                 if(newValue.startDate) {
@@ -275,7 +287,9 @@ function DgFormDate(moment) {
             id: '@dgId'
         },
         templateUrl: 'form-elements/date/date.html',
-        link: function(scope) {
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+
             function dateChanged(newValue) {
                 if(!newValue) return;
                 if(newValue) {
