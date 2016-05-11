@@ -1,5 +1,45 @@
 /**
  * @ngdoc overview
+ * @memberof dugun.forms.helpers.propsFilter
+ * @description
+ * Property filter
+ */
+angular.module('dugun.forms.helpers.propsFilter', []);
+
+angular.module('dugun.forms.helpers.propsFilter')
+    .filter('props', function() {
+        return function(items, props) {
+            var out = [];
+
+            if (angular.isArray(items)) {
+                items.forEach(function(item) {
+                    var itemMatches = false;
+
+                    var keys = Object.keys(props);
+                    for (var i = 0; i < keys.length; i++) {
+                        var prop = keys[i];
+                        var text = props[prop].toLowerCase();
+                        if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+                            itemMatches = true;
+                            break;
+                        }
+                    }
+
+                    if (itemMatches) {
+                        out.push(item);
+                    }
+                });
+            } else {
+                // Let the output be the input untouched
+                out = items;
+            }
+
+            return out;
+        };
+    });
+
+/**
+ * @ngdoc overview
  * @memberof dugun.forms
  * @description
  * Form elements from directives
@@ -7,8 +47,11 @@
 angular.module('dugun.forms', [
     'ngSanitize',
     'ui.mask',
+    'ui.bootstrap.datepicker',
+    'ui.select',
     'daterangepicker',
     'angularMoment',
+    'dugun.forms.helpers',
 ]);
 
 /**
@@ -214,65 +257,53 @@ angular.module('dugun.forms').directive('dgFormDateRange', DgFormDateRange);
 
 /**
  * @ngdoc directive
- * @name dugun.forms:dgFormBoolean
- * @restrict 'ACE'
+ * @name dugun.forms:DgFormDate
+ * @restrict 'E'
  * @scope
  **/
-function DgFormBoolean() {
+function DgFormDate(moment) {
     return {
-        restrict: 'ACE',
+        restrict: 'AEC',
         scope: {
             model: '=ngModel',
-            allowClear: '@',
-            labelTrue: '@',
-            labelFalse: '@'
+            required: '=',
+            placeholder: '@',
+            id: '@dgId'
         },
-        templateUrl: 'form-elements/boolean/boolean.html'
-    };
-}
-
-angular.module('dugun.forms')
-    .directive('dgFormBoolean', DgFormBoolean);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:dgFormBooleanSelect
- * @restrict 'ACE'
- * @scope
- **/
-function DgFormBooleanSelect() {
-    return {
-        restrict: 'ACE',
-        scope: {
-            model: '=ngModel',
-            allowClear: '@',
-            labelTrue: '@',
-            labelFalse: '@',
-            valueTrue: '&',
-            valueFalse: '&',
-            required: '=ngRequired',
-            placeholder: '@'
-        },
-        templateUrl: 'form-elements/boolean/boolean-select.html',
+        templateUrl: 'form-elements/date/date.html',
         link: function(scope) {
-            var options = [];
+            function dateChanged(newValue) {
+                if(!newValue) return;
+                if(newValue) {
+                    scope.model = moment(newValue).format('YYYY-MM-DD');
+                } else {
+                    delete scope.model;
+                }
+            }
 
-            options.push({
-                id: typeof scope.valueTrue() === 'undefined' ? true : scope.valueTrue(),
-                name: scope.labelTrue
-            });
-            options.push({
-                id: typeof scope.valueFalse() === 'undefined' ? false : scope.valueFalse(),
-                name: scope.labelFalse
-            });
+            // Initialize scope.dates with values from model.
+            function init() {
+                if(!scope.date) {
+                    scope.date = null;
+                }
 
-            scope.options = options;
+                if(scope.model && !scope.date) {
+                    scope.date = scope.model;
+                }
+            }
+
+            init();
+            scope.$watch('date', dateChanged);
+            scope.$watch('model', init);
         }
     };
 }
 
-angular.module('dugun.forms')
-    .directive('dgFormBooleanSelect', DgFormBooleanSelect);
+DgFormDate.$inject = [
+    'moment',
+];
+
+angular.module('dugun.forms').directive('dgFormDate', DgFormDate);
 
 /**
  * @ngdoc directive
@@ -359,3 +390,75 @@ function DgFormCheckbox() {
 }
 
 angular.module('dugun.forms').directive('dgFormCheckbox', DgFormCheckbox);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormBoolean
+ * @restrict 'ACE'
+ * @scope
+ **/
+function DgFormBoolean() {
+    return {
+        restrict: 'ACE',
+        scope: {
+            model: '=ngModel',
+            allowClear: '@',
+            labelTrue: '@',
+            labelFalse: '@'
+        },
+        templateUrl: 'form-elements/boolean/boolean.html'
+    };
+}
+
+angular.module('dugun.forms')
+    .directive('dgFormBoolean', DgFormBoolean);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormBooleanSelect
+ * @restrict 'ACE'
+ * @scope
+ **/
+function DgFormBooleanSelect() {
+    return {
+        restrict: 'ACE',
+        scope: {
+            model: '=ngModel',
+            allowClear: '@',
+            labelTrue: '@',
+            labelFalse: '@',
+            valueTrue: '&',
+            valueFalse: '&',
+            required: '=ngRequired',
+            placeholder: '@'
+        },
+        templateUrl: 'form-elements/boolean/boolean-select.html',
+        link: function(scope) {
+            var options = [];
+
+            options.push({
+                id: typeof scope.valueTrue() === 'undefined' ? true : scope.valueTrue(),
+                name: scope.labelTrue
+            });
+            options.push({
+                id: typeof scope.valueFalse() === 'undefined' ? false : scope.valueFalse(),
+                name: scope.labelFalse
+            });
+
+            scope.options = options;
+        }
+    };
+}
+
+angular.module('dugun.forms')
+    .directive('dgFormBooleanSelect', DgFormBooleanSelect);
+
+/**
+ * @ngdoc overview
+ * @memberof dugun.forms.helpers
+ * @description
+ * Helpers
+ */
+angular.module('dugun.forms.helpers', [
+    'dugun.forms.helpers.propsFilter',
+]);
