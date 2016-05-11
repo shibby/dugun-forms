@@ -10,7 +10,7 @@ var gulp = require('gulp'),
 pipes.buildJS = function() {
     console.info('Building JS');
 
-    var source = ['src/**/*.js'];
+    var source = ['src/**/*.js', '!**/*.spec.js'];
 
     return gulp.src(source)
         .pipe(angularFilesort())
