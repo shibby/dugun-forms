@@ -3,7 +3,7 @@ angular.module('dugun.forms.helpers.propsFilter')
         return function(items, props) {
             var out = [];
 
-            if (angular.isArray(items)) {
+            if(angular.isArray(items)) {
                 items.forEach(function(item) {
                     var itemMatches = false;
 
@@ -11,6 +11,10 @@ angular.module('dugun.forms.helpers.propsFilter')
                     for (var i = 0; i < keys.length; i++) {
                         var prop = keys[i];
                         var text = props[prop].toLowerCase();
+                        if(typeof item === 'undefined' || typeof item[prop] === 'undefined') {
+                            itemMatches = false;
+                            break;
+                        }
                         if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
                             itemMatches = true;
                             break;
