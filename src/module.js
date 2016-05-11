@@ -7,6 +7,8 @@
 angular.module('dugun.forms', [
     'ngSanitize',
     'ui.mask',
+    'ui.bootstrap.datepicker',
+    'ui.select',
     'daterangepicker',
     'angularMoment',
 ]);
