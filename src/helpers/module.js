@@ -6,4 +6,5 @@
  */
 angular.module('dugun.forms.helpers', [
     'dugun.forms.helpers.propsFilter',
+    'dugun.forms.helpers.numberOnly',
 ]);
