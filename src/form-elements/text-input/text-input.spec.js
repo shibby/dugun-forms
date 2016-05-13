@@ -14,4 +14,17 @@ describe('dgFormText directive', function() {
         $rootScope.$digest();
         expect($(element).find('input').length).toBeTruthy();
     });
+
+    it('sets the name', function() {
+        $rootScope.modelNumber = null;
+        var element = $compile(
+            '<form name="form">' +
+            '<dg-form-text name="numberField" type="number" number-only="true" ng-model="modelNumber"></dg-form-text>' +
+            '</form>'
+        )($rootScope);
+        $rootScope.$digest();
+
+        var form = $rootScope.form;
+        expect(form.numberField).toBeTruthy();
+    });
 });
