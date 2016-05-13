@@ -33,7 +33,7 @@ function DgFormDate(moment) {
                 }
 
                 if(scope.model && !scope.date) {
-                    scope.date = scope.model;
+                    scope.date = new Date(scope.model);
                 }
             }
 
