@@ -125,8 +125,8 @@ try {
   module = angular.module('dugun.forms', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/textarea/textarea.html',
-    '<textarea class="form-control" ng-model="model" ng-required="required" ng-attr-id="{{ dgId }}" ng-attr-placeholder="{{ placeholder }}" ng-attr-maxlength="{{ maxlength }}" ng-attr-rows="{{ rows }}" ng-attr-form="{{ attrs.form ? attrs.form : null }}" style="{{ style }}"></textarea>');
+  $templateCache.put('form-elements/text-input/text-input.html',
+    '<input type="{{ type || \'text\' }}" class="form-control full-width" ng-if="!maxlength || disableLength" ng-model="$parent.model" ng-required="required" ng-attr-placeholder="{{ placeholder }}" ui-mask="{{ mask || \'\' }}" ng-attr-maxlength="{{ maxlength }}" ng-attr-min="{{ attrs.min ? attrs.min : null }}" ng-attr-max="{{ attrs.max ? attrs.max : null }}" ng-attr-step="{{ attrs.step ? attrs.step : null }}" ng-attr-form="{{ attrs.form ? attrs.form : null }}" ng-attr-name="{{ attrs.name ? attrs.name : null }}" number-only="{{ numberOnly() ? \'true\' : \'\' }}" ng-model-options="ngModelOptions || {}"><div class="input-group" ng-if="maxlength && !disableLength"><input type="{{ type || \'text\' }}" class="form-control" ng-model="$parent.model" ng-required="required" ng-attr-id="{{ dgId }}" ng-attr-placeholder="{{ placeholder }}" ng-attr-maxlength="{{ maxlength }}" ng-attr-min="{{ attrs.min ? attrs.min : null }}" ng-attr-max="{{ attrs.max ? attrs.max : null }}" ng-attr-step="{{ attrs.step ? attrs.step : null }}" ng-attr-form="{{ attrs.form ? attrs.form : null }}" number-only="{{ numberOnly() ? \'true\' : \'\' }}" ng-model-options="ngModelOptions || {}"><div class="input-group-addon" ng-bind="maxlength - model.length"></div></div>');
 }]);
 })();
 
@@ -137,7 +137,7 @@ try {
   module = angular.module('dugun.forms', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/text-input/text-input.html',
-    '<input type="{{ type || \'text\' }}" class="form-control full-width" ng-if="!maxlength || disableLength" ng-model="$parent.model" ng-required="required" ng-attr-placeholder="{{ placeholder }}" ui-mask="{{ mask || \'\' }}" ng-attr-maxlength="{{ maxlength }}" ng-attr-min="{{ attrs.min ? attrs.min : null }}" ng-attr-max="{{ attrs.max ? attrs.max : null }}" ng-attr-step="{{ attrs.step ? attrs.step : null }}" ng-attr-form="{{ attrs.form ? attrs.form : null }}" number-only="{{ numberOnly() ? \'true\' : \'\' }}" ng-model-options="ngModelOptions || {}"><div class="input-group" ng-if="maxlength && !disableLength"><input type="{{ type || \'text\' }}" class="form-control" ng-model="$parent.model" ng-required="required" ng-attr-id="{{ dgId }}" ng-attr-placeholder="{{ placeholder }}" ng-attr-maxlength="{{ maxlength }}" ng-attr-min="{{ attrs.min ? attrs.min : null }}" ng-attr-max="{{ attrs.max ? attrs.max : null }}" ng-attr-step="{{ attrs.step ? attrs.step : null }}" ng-attr-form="{{ attrs.form ? attrs.form : null }}" number-only="{{ numberOnly() ? \'true\' : \'\' }}" ng-model-options="ngModelOptions || {}"><div class="input-group-addon" ng-bind="maxlength - model.length"></div></div>');
+  $templateCache.put('form-elements/textarea/textarea.html',
+    '<textarea class="form-control" ng-model="model" ng-required="required" ng-attr-id="{{ dgId }}" ng-attr-placeholder="{{ placeholder }}" ng-attr-maxlength="{{ maxlength }}" ng-attr-rows="{{ rows }}" ng-attr-form="{{ attrs.form ? attrs.form : null }}" style="{{ style }}"></textarea>');
 }]);
 })();

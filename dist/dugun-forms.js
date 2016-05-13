@@ -1,5 +1,52 @@
 /**
  * @ngdoc overview
+ * @memberof dugun.forms.helpers.uiSelectRequired
+ * @description
+ * description
+ */
+angular.module('dugun.forms.helpers.uiSelectRequired', []);
+
+function UISelectRequiredDirective() {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attrs, ngModel) {
+            var selectElement = $('<select class="hidden-select"></select>')
+                .prop('required', true);
+            if(attrs.form) {
+                selectElement.attr('form', attrs.form);
+            }
+
+            scope.$watch(function () {
+                return ngModel.$modelValue;
+            }, function (newValue) {
+                if(typeof newValue !== 'undefined' && newValue !== null) {
+                    selectElement.append('<option value="'+ newValue +'"></option>')
+                        .find('option:last-child')
+                        .prop('selected', true);
+                } else {
+                    selectElement.find('option').remove();
+                }
+            });
+
+            // Remove the hidden select if required is false
+            scope.$watch(function() {
+                return attrs.uiSelectRequired;
+            }, function(newValue) {
+                if(newValue === 'true') {
+                    $(element).after(selectElement);
+                } else {
+                    $(selectElement).remove();
+                }
+            });
+        }
+    };
+}
+
+angular.module('dugun.forms.helpers.uiSelectRequired')
+    .directive('uiSelectRequired', UISelectRequiredDirective);
+
+/**
+ * @ngdoc overview
  * @memberof dugun.forms.helpers.propsFilter
  * @description
  * Property filter
@@ -44,6 +91,33 @@ angular.module('dugun.forms.helpers.propsFilter')
 
 /**
  * @ngdoc overview
+ * @memberof dugun.forms.helpers.numberOnly
+ * @description
+ * description
+ */
+angular.module('dugun.forms.helpers.numberOnly', []);
+
+// Source from: http://stackoverflow.com/questions/19036443/angularjs-how-to-allow-only-a-number-digits-and-decimal-point-to-be-typed-in
+// Author: Nishchit Dhanani
+// Written on: 2013-11-14
+function NumberOnlyDirective($window) {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, modelCtrl) {
+            if(attrs.numberOnly === 'true') {
+                modelCtrl.$formatters.push(function (inputValue) {
+                    return $window.parseFloat(inputValue);
+                });
+            }
+        }
+    };
+}
+
+angular.module('dugun.forms.helpers.numberOnly')
+    .directive('numberOnly', NumberOnlyDirective);
+
+/**
+ * @ngdoc overview
  * @memberof dugun.forms
  * @description
  * Form elements from directives
@@ -57,6 +131,32 @@ angular.module('dugun.forms', [
     'angularMoment',
     'dugun.forms.helpers',
 ]);
+
+/**
+ * @ngdoc directive
+ * @name dgFormTextarea
+ * @restrict 'E'
+ * @scope
+ **/
+function DgFormTextarea() {
+    return {
+        restrict: 'E',
+        scope: {
+            model: '=ngModel',
+            required: '=ngRequired',
+            maxlength: '@',
+            dgId: '@',
+            rows: '@',
+            style: "@"
+        },
+        templateUrl: 'form-elements/textarea/textarea.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+        }
+    };
+}
+
+angular.module('dugun.forms').directive('dgFormTextarea', DgFormTextarea);
 
 /**
  * @ngdoc directive
@@ -87,32 +187,6 @@ function DgFormText() {
 }
 
 angular.module('dugun.forms').directive('dgFormText', DgFormText);
-
-/**
- * @ngdoc directive
- * @name dgFormTextarea
- * @restrict 'E'
- * @scope
- **/
-function DgFormTextarea() {
-    return {
-        restrict: 'E',
-        scope: {
-            model: '=ngModel',
-            required: '=ngRequired',
-            maxlength: '@',
-            dgId: '@',
-            rows: '@',
-            style: "@"
-        },
-        templateUrl: 'form-elements/textarea/textarea.html',
-        link: function(scope, element, attrs) {
-            scope.attrs = attrs;
-        }
-    };
-}
-
-angular.module('dugun.forms').directive('dgFormTextarea', DgFormTextarea);
 
 /**
  * @ngdoc directive
@@ -479,4 +553,6 @@ angular.module('dugun.forms')
  */
 angular.module('dugun.forms.helpers', [
     'dugun.forms.helpers.propsFilter',
+    'dugun.forms.helpers.uiSelectRequired',
+    'dugun.forms.helpers.numberOnly',
 ]);
