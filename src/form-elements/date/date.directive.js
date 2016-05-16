@@ -11,11 +11,16 @@ function DgFormDate(moment) {
             model: '=ngModel',
             required: '=',
             placeholder: '@',
-            id: '@dgId'
+            id: '@dgId',
+            ngChange: '&'
         },
         templateUrl: 'form-elements/date/date.html',
         link: function(scope, element, attrs) {
             scope.attrs = attrs;
+
+            scope.changed = function($event) {
+                scope.ngChange({$event: $event});
+            };
 
             function dateChanged(newValue) {
                 if(!newValue) return;
