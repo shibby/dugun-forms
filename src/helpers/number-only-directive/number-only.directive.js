@@ -14,5 +14,9 @@ function NumberOnlyDirective($window) {
     };
 }
 
+NumberOnlyDirective.$inject = [
+    '$window',
+];
+
 angular.module('dugun.forms.helpers.numberOnly')
     .directive('numberOnly', NumberOnlyDirective);
