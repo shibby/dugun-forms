@@ -2,6 +2,7 @@ describe('numberOnly directive', function() {
     var $compile,
         $rootScope;
 
+    beforeEach(inject.strictDi(true));
     beforeEach(module('dugun.forms'));
 
     beforeEach(inject(function(_$compile_, _$rootScope_){
@@ -16,6 +17,11 @@ describe('numberOnly directive', function() {
         )($rootScope);
         $rootScope.$digest();
     }));
+
+    it('$inject is defined and equal to parameters', function() {
+        expect(NumberOnlyDirective.$inject.constructor.name).toBe('Array');
+        expect(NumberOnlyDirective.$inject.length).toBeGreaterThan(0);
+    });
 
     it('type=number accepts integer from input', function() {
         var form = $rootScope.form;
