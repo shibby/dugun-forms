@@ -13,7 +13,8 @@ function DgFormSelect2() {
             allowClear: '@',
             required: '=ngRequired',
             placeholder: '@',
-            searchEnabled: '&'
+            searchEnabled: '&',
+            ngDisabled: '='
         },
         templateUrl: 'form-elements/select2/single.html',
         link: function(scope, element, attrs) {
