@@ -38,7 +38,7 @@ function DgFormDate(moment) {
                 }
 
                 if(angular.isFunction(scope.ngChange)) {
-                    scope.ngChange(scope.date);
+                    scope.ngChange({ model: scope.date });
                 }
             }
 
