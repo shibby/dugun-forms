@@ -5,7 +5,7 @@
     ui-select-required="{{ required ? true : false }}"
     search-enabled="searchEnabled()"
     ng-attr-form="{{ attrs.form ? attrs.form : null }}"
-    ng-disabled="{{ ngDisabled ? true : false }}"
+    ng-disabled="ngDisabled ? true : false"
 >
     <ui-select-match placeholder="{{ placeholder }}" allow-clear="{{ allowClear }}">
         <p ng-bind="$select.selected.name"></p>
