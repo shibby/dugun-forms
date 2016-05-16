@@ -113,6 +113,10 @@ function NumberOnlyDirective($window) {
     };
 }
 
+NumberOnlyDirective.$inject = [
+    '$window',
+];
+
 angular.module('dugun.forms.helpers.numberOnly')
     .directive('numberOnly', NumberOnlyDirective);
 
@@ -203,7 +207,8 @@ function DgFormSelect2() {
             allowClear: '@',
             required: '=ngRequired',
             placeholder: '@',
-            searchEnabled: '&'
+            searchEnabled: '&',
+            ngDisabled: '='
         },
         templateUrl: 'form-elements/select2/single.html',
         link: function(scope, element, attrs) {
