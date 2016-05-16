@@ -18,10 +18,6 @@ function DgFormDate(moment) {
         link: function(scope, element, attrs) {
             scope.attrs = attrs;
 
-            scope.changed = function($event) {
-                scope.ngChange({$event: $event});
-            };
-
             function dateChanged(newValue) {
                 if(!newValue) return;
                 if(newValue) {
@@ -39,6 +35,10 @@ function DgFormDate(moment) {
 
                 if(scope.model && !scope.date) {
                     scope.date = new Date(scope.model);
+                }
+
+                if(angular.isFunction(scope.ngChange)) {
+                    scope.ngChange(scope.date);
                 }
             }
 
