@@ -1,7 +1,7 @@
 {
   "name": "dugun-forms",
   "version": "1.1.10",
-  "description": "Log to server.",
+  "description": "Easy to use directives to generate form fields",
   "authors": [
     "Ege Sertçetin"
   ],
