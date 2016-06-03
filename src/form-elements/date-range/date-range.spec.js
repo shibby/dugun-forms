@@ -61,9 +61,7 @@ describe('dgFormDateRange directive', function() {
         expect(form.dateRangeField.$viewValue).toBe('2015-01-01 - 2016-01-01');
     });
 
-    xit('when viewValue is changed, models are set', function() {
-        // $rootScope.dateStartModel = undefined;
-        // $rootScope.dateEndModel = undefined;
+    it('when viewValue is changed, models are set', function() {
         var element = $compile(
             '<form name="form">' +
             '<dg-form-date-range ng-model-start="dateStartModel" ng-model-end="dateEndModel" dg-name="dateRangeField"></dg-form-date-range>' +
@@ -72,11 +70,11 @@ describe('dgFormDateRange directive', function() {
         $rootScope.$digest();
 
         var form = $rootScope.form;
-        form.dateRangeField.$viewValue = '2015-01-01 - 2016-01-01';
+        form.dateRangeField.$setViewValue('2015-01-01 - 2016-01-01');
         $rootScope.$digest();
 
         var isolatedScope = element.find('dg-form-date-range').isolateScope();
-        console.log($rootScope.dateStartModel);
         expect($rootScope.dateStartModel).toBe('2015-01-01');
+        expect($rootScope.dateEndModel).toBe('2016-01-01');
     });
 });
