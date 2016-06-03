@@ -10,7 +10,7 @@ function DgFormDateRange(moment) {
         scope: {
             modelStart: '=ngModelStart',
             modelEnd: '=ngModelEnd',
-            required: '=',
+            required: '=ngRequired',
             min: '=',
             max: '=',
             options: '=',
