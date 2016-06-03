@@ -306,6 +306,7 @@ function DgFormDateRange(moment) {
         templateUrl: 'form-elements/date-range/date-range.html',
         link: function(scope, element, attrs) {
             scope.attrs = attrs;
+            scope.dates = {startDate: null, endDate: null};
 
             function datesChanged(newValue) {
                 if(!newValue) return;
@@ -323,23 +324,25 @@ function DgFormDateRange(moment) {
 
             // Initialize scope.dates with values from model.
             function init() {
-                if(!scope.dates) {
-                    scope.dates = {};
+                if(
+                    (scope.modelStart && !scope.dates.startDate) ||
+                    (scope.modelEnd && !scope.dates.endDate)
+                ) {
+                    scope.dates = {
+                        startDate: moment(scope.modelStart),
+                        endDate: moment(scope.modelEnd),
+                    };
                 }
 
-                if(scope.modelStart && !scope.dates.startDate) {
-                    scope.dates.startDate = moment(scope.modelStart);
-                }
-
-                if(scope.modelEnd && !scope.dates.endDate) {
-                    scope.dates.endDate = moment(scope.modelEnd);
+                if(!scope.modelStart || !scope.modelEnd) {
+                    scope.dates = {startDate: null, endDate: null};
                 }
             }
 
             init();
-            scope.$watch('dates', datesChanged, true);
             scope.$watch('modelStart', init);
             scope.$watch('modelEnd', init);
+            scope.$watch('dates', datesChanged, true);
         }
     };
 }
@@ -349,63 +352,6 @@ DgFormDateRange.$inject = [
 ];
 
 angular.module('dugun.forms').directive('dgFormDateRange', DgFormDateRange);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:DgFormDate
- * @restrict 'E'
- * @scope
- **/
-function DgFormDate(moment) {
-    return {
-        restrict: 'AEC',
-        scope: {
-            model: '=ngModel',
-            required: '=',
-            placeholder: '@',
-            id: '@dgId',
-            ngChange: '&'
-        },
-        templateUrl: 'form-elements/date/date.html',
-        link: function(scope, element, attrs) {
-            scope.attrs = attrs;
-
-            function dateChanged(newValue) {
-                if(!newValue) return;
-                if(newValue) {
-                    scope.model = moment(newValue).format('YYYY-MM-DD');
-                } else {
-                    delete scope.model;
-                }
-            }
-
-            // Initialize scope.dates with values from model.
-            function init() {
-                if(!scope.date) {
-                    scope.date = null;
-                }
-
-                if(scope.model && !scope.date) {
-                    scope.date = new Date(scope.model);
-                }
-
-                if(angular.isFunction(scope.ngChange)) {
-                    scope.ngChange({ model: scope.date });
-                }
-            }
-
-            init();
-            scope.$watch('date', dateChanged);
-            scope.$watch('model', init);
-        }
-    };
-}
-
-DgFormDate.$inject = [
-    'moment',
-];
-
-angular.module('dugun.forms').directive('dgFormDate', DgFormDate);
 
 /**
  * @ngdoc directive
@@ -468,6 +414,63 @@ function DgFormBooleanSelect() {
 
 angular.module('dugun.forms')
     .directive('dgFormBooleanSelect', DgFormBooleanSelect);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:DgFormDate
+ * @restrict 'E'
+ * @scope
+ **/
+function DgFormDate(moment) {
+    return {
+        restrict: 'AEC',
+        scope: {
+            model: '=ngModel',
+            required: '=',
+            placeholder: '@',
+            id: '@dgId',
+            ngChange: '&'
+        },
+        templateUrl: 'form-elements/date/date.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+
+            function dateChanged(newValue) {
+                if(!newValue) return;
+                if(newValue) {
+                    scope.model = moment(newValue).format('YYYY-MM-DD');
+                } else {
+                    delete scope.model;
+                }
+            }
+
+            // Initialize scope.dates with values from model.
+            function init() {
+                if(!scope.date) {
+                    scope.date = null;
+                }
+
+                if(scope.model && !scope.date) {
+                    scope.date = new Date(scope.model);
+                }
+
+                if(angular.isFunction(scope.ngChange)) {
+                    scope.ngChange({ model: scope.date });
+                }
+            }
+
+            init();
+            scope.$watch('date', dateChanged);
+            scope.$watch('model', init);
+        }
+    };
+}
+
+DgFormDate.$inject = [
+    'moment',
+];
+
+angular.module('dugun.forms').directive('dgFormDate', DgFormDate);
 
 /**
  * @ngdoc directive

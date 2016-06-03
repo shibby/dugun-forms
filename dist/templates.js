@@ -29,6 +29,18 @@ try {
   module = angular.module('dugun.forms', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('form-elements/date/date.html',
+    '<input type="text" class="form-control" ng-model="date" ng-attr-form="{{ form || \'\' }}" ng-attr-id="{{ id || \'\' }}" uib-datepicker-popup ng-click="datepickerPopupOpen = true" is-open="datepickerPopupOpen" ng-required="required" ng-attr-form="{{ attrs.form ? attrs.form : undefined }}">');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('dugun.forms');
+} catch (e) {
+  module = angular.module('dugun.forms', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/boolean/boolean-select.html',
     '<dg-form-select2 ng-model="model" options="options" placeholder="{{ placeholder }}" allow-clear="{{ allowClear }}" ng-required="required ? true : false" search-enabled="false"></dg-form-select2>');
 }]);
@@ -53,20 +65,8 @@ try {
   module = angular.module('dugun.forms', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/date/date.html',
-    '<input type="text" class="form-control" ng-model="date" ng-attr-form="{{ form || \'\' }}" ng-attr-id="{{ id || \'\' }}" uib-datepicker-popup ng-click="datepickerPopupOpen = true" is-open="datepickerPopupOpen" ng-required="required" ng-attr-form="{{ attrs.form ? attrs.form : undefined }}">');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('dugun.forms');
-} catch (e) {
-  module = angular.module('dugun.forms', []);
-}
-module.run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/date-range/date-range.html',
-    '<input date-range-picker class="form-control full-width date-picker" type="text" ng-model="dates" min="min" max="max" options="options" placeholder="{{ placeholder }}" clearable="clearable" ng-required="required" ng-attr-form="{{ attrs.form ? attrs.form : undefined }}">');
+    '<input date-range-picker class="form-control full-width date-picker" type="text" ng-model="dates" min="min" max="max" options="options" placeholder="{{ placeholder }}" clearable="clearable" ng-required="required" ng-attr-form="{{ attrs.form ? attrs.form : undefined }}" ng-attr-name="{{ attrs.dgName ? attrs.dgName : undefined }}">');
 }]);
 })();
 
