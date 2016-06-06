@@ -11,5 +11,6 @@ angular.module('dugun.forms', [
     'ui.select',
     'daterangepicker',
     'angularMoment',
+    'ui.timepicker',
     'dugun.forms.helpers',
 ]);
