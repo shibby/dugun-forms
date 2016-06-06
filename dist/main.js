@@ -554,6 +554,68 @@ angular.module('dugun.forms').directive('dgFormDate', DgFormDate);
 
 /**
  * @ngdoc directive
+ * @name dugun.forms:dgFormBoolean
+ * @restrict 'ACE'
+ * @scope
+ **/
+function DgFormBoolean() {
+    return {
+        restrict: 'ACE',
+        scope: {
+            model: '=ngModel',
+            allowClear: '@',
+            labelTrue: '@',
+            labelFalse: '@'
+        },
+        templateUrl: 'form-elements/boolean/boolean.html'
+    };
+}
+
+angular.module('dugun.forms')
+    .directive('dgFormBoolean', DgFormBoolean);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormBooleanSelect
+ * @restrict 'ACE'
+ * @scope
+ **/
+function DgFormBooleanSelect() {
+    return {
+        restrict: 'ACE',
+        scope: {
+            model: '=ngModel',
+            allowClear: '@',
+            labelTrue: '@',
+            labelFalse: '@',
+            valueTrue: '&',
+            valueFalse: '&',
+            required: '=ngRequired',
+            placeholder: '@'
+        },
+        templateUrl: 'form-elements/boolean/boolean-select.html',
+        link: function(scope) {
+            var options = [];
+
+            options.push({
+                id: typeof scope.valueTrue() === 'undefined' ? true : scope.valueTrue(),
+                name: scope.labelTrue
+            });
+            options.push({
+                id: typeof scope.valueFalse() === 'undefined' ? false : scope.valueFalse(),
+                name: scope.labelFalse
+            });
+
+            scope.options = options;
+        }
+    };
+}
+
+angular.module('dugun.forms')
+    .directive('dgFormBooleanSelect', DgFormBooleanSelect);
+
+/**
+ * @ngdoc directive
  * @name dugun.forms:dgFormCheckboxMultiple
  * @restrict 'ACE'
  * @scope
@@ -639,68 +701,6 @@ function DgFormCheckbox() {
 angular.module('dugun.forms').directive('dgFormCheckbox', DgFormCheckbox);
 
 /**
- * @ngdoc directive
- * @name dugun.forms:dgFormBoolean
- * @restrict 'ACE'
- * @scope
- **/
-function DgFormBoolean() {
-    return {
-        restrict: 'ACE',
-        scope: {
-            model: '=ngModel',
-            allowClear: '@',
-            labelTrue: '@',
-            labelFalse: '@'
-        },
-        templateUrl: 'form-elements/boolean/boolean.html'
-    };
-}
-
-angular.module('dugun.forms')
-    .directive('dgFormBoolean', DgFormBoolean);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:dgFormBooleanSelect
- * @restrict 'ACE'
- * @scope
- **/
-function DgFormBooleanSelect() {
-    return {
-        restrict: 'ACE',
-        scope: {
-            model: '=ngModel',
-            allowClear: '@',
-            labelTrue: '@',
-            labelFalse: '@',
-            valueTrue: '&',
-            valueFalse: '&',
-            required: '=ngRequired',
-            placeholder: '@'
-        },
-        templateUrl: 'form-elements/boolean/boolean-select.html',
-        link: function(scope) {
-            var options = [];
-
-            options.push({
-                id: typeof scope.valueTrue() === 'undefined' ? true : scope.valueTrue(),
-                name: scope.labelTrue
-            });
-            options.push({
-                id: typeof scope.valueFalse() === 'undefined' ? false : scope.valueFalse(),
-                name: scope.labelFalse
-            });
-
-            scope.options = options;
-        }
-    };
-}
-
-angular.module('dugun.forms')
-    .directive('dgFormBooleanSelect', DgFormBooleanSelect);
-
-/**
  * @ngdoc overview
  * @memberof dugun.forms.helpers
  * @description
@@ -718,16 +718,6 @@ angular.module('ui.timepicker').value('uiTimepickerConfig',{
 });
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/boolean/boolean-select.html',
-    '<dg-form-select2 ng-model="model" options="options" placeholder="{{ placeholder }}" allow-clear="{{ allowClear }}" ng-required="required ? true : false" search-enabled="false"></dg-form-select2>');
-}]);
-
-angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/boolean/boolean.html',
-    '<label class="btn btn-default" ng-model="model" uncheckable="{{ allowClear }}" uib-btn-radio="true" ng-bind="labelTrue"></label><label class="btn btn-default" ng-model="model" uncheckable="{{ allowClear }}" uib-btn-radio="false" ng-bind="labelFalse"></label>');
-}]);
-
-angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/checkbox/multiple.html',
     '<div class="checkbox" ng-repeat="option in options"><label><input type="checkbox" ng-model="option.selected"> <span ng-if="!html()" class="text" ng-bind="option.name"></span> <span ng-if="html()" class="text" ng-bind-html="option.name"></span></label></div>');
 }]);
@@ -735,6 +725,16 @@ angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/checkbox/template.html',
     '<div class="checkbox"><label><input type="checkbox" ng-model="model" ng-true-value="{{ trueValue }}" ng-false-value="{{ falseValue }}" name="{{ name }}" ng-required="{{ required ? true : false }}"> <span ng-if="!labelTemplate">{{ label }}</span> <span ng-if="labelTemplate" ng-include="labelTemplate"></span></label></div>');
+}]);
+
+angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
+  $templateCache.put('form-elements/boolean/boolean-select.html',
+    '<dg-form-select2 ng-model="model" options="options" placeholder="{{ placeholder }}" allow-clear="{{ allowClear }}" ng-required="required ? true : false" search-enabled="false"></dg-form-select2>');
+}]);
+
+angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
+  $templateCache.put('form-elements/boolean/boolean.html',
+    '<label class="btn btn-default" ng-model="model" uncheckable="{{ allowClear }}" uib-btn-radio="true" ng-bind="labelTrue"></label><label class="btn btn-default" ng-model="model" uncheckable="{{ allowClear }}" uib-btn-radio="false" ng-bind="labelFalse"></label>');
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
@@ -784,5 +784,5 @@ angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/time/time.html',
-    '<input ui-timepicker ng-model="time" ng-required="required" ng-attr-placeholder="{{ placeholder }}" ng-attr-id="{{ id || undefined }}" ng-attr-name="{{ attrs.dgName || undefined }}">');
+    '<input class="form-control" ui-timepicker ng-model="time" ng-required="required" ng-attr-placeholder="{{ placeholder }}" ng-attr-id="{{ id || undefined }}" ng-attr-name="{{ attrs.dgName || undefined }}">');
 }]);
