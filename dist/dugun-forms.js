@@ -47,6 +47,37 @@ angular.module('dugun.forms.helpers.uiSelectRequired')
 
 /**
  * @ngdoc overview
+ * @memberof dugun.forms.helpers.numberOnly
+ * @description
+ * description
+ */
+angular.module('dugun.forms.helpers.numberOnly', []);
+
+// Source from: http://stackoverflow.com/questions/19036443/angularjs-how-to-allow-only-a-number-digits-and-decimal-point-to-be-typed-in
+// Author: Nishchit Dhanani
+// Written on: 2013-11-14
+function NumberOnlyDirective($window) {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, modelCtrl) {
+            if(attrs.numberOnly === 'true') {
+                modelCtrl.$formatters.push(function (inputValue) {
+                    return $window.parseFloat(inputValue);
+                });
+            }
+        }
+    };
+}
+
+NumberOnlyDirective.$inject = [
+    '$window',
+];
+
+angular.module('dugun.forms.helpers.numberOnly')
+    .directive('numberOnly', NumberOnlyDirective);
+
+/**
+ * @ngdoc overview
  * @memberof dugun.forms.helpers.propsFilter
  * @description
  * Property filter
@@ -88,37 +119,6 @@ angular.module('dugun.forms.helpers.propsFilter')
             return out;
         };
     });
-
-/**
- * @ngdoc overview
- * @memberof dugun.forms.helpers.numberOnly
- * @description
- * description
- */
-angular.module('dugun.forms.helpers.numberOnly', []);
-
-// Source from: http://stackoverflow.com/questions/19036443/angularjs-how-to-allow-only-a-number-digits-and-decimal-point-to-be-typed-in
-// Author: Nishchit Dhanani
-// Written on: 2013-11-14
-function NumberOnlyDirective($window) {
-    return {
-        require: 'ngModel',
-        link: function(scope, element, attrs, modelCtrl) {
-            if(attrs.numberOnly === 'true') {
-                modelCtrl.$formatters.push(function (inputValue) {
-                    return $window.parseFloat(inputValue);
-                });
-            }
-        }
-    };
-}
-
-NumberOnlyDirective.$inject = [
-    '$window',
-];
-
-angular.module('dugun.forms.helpers.numberOnly')
-    .directive('numberOnly', NumberOnlyDirective);
 
 /**
  * @ngdoc overview
@@ -349,6 +349,85 @@ angular.module('dugun.forms').directive('dgFormRadio', DgFormRadio);
 
 /**
  * @ngdoc directive
+ * @name dugun.forms:DgFormDateTime
+ * @restrict 'ACE'
+ * @scope
+ **/
+function DgFormDateTime(moment) {
+    return {
+        restrict: 'ACE',
+        scope: {
+            model: '=ngModel',
+            required: '=',
+            placeholder: '@',
+            id: '@dgId'
+        },
+        templateUrl: 'form-elements/datetime/datetime.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+
+            function dateChanged(newValue) {
+                if(!newValue) return;
+                if(newValue) {
+                    var newDate = moment(newValue);
+                    if(scope.time) {
+                        var timeSplit = scope.time.split(':');
+                        newDate = newDate.hour(timeSplit[0]).minute(timeSplit[1]);
+                    }
+                    scope.model = newDate.format('YYYY-MM-DD HH:mm:ss');
+                } else {
+                    delete scope.model;
+                }
+            }
+
+            function timeChanged(newValue) {
+                if(!newValue) return;
+                if(newValue) {
+                    var date = moment(scope.model);
+                    var timeSplit = newValue.split(':');
+                    date = date.hour(timeSplit[0]).minute(timeSplit[1]).second('00');
+                    scope.model = moment(date).format('YYYY-MM-DD HH:mm:ss');
+                } else {
+                    delete scope.model;
+                }
+            }
+
+            function init() {
+                if(!scope.date) {
+                    scope.date = null;
+                }
+
+                if(!scope.time) {
+                    scope.time = null;
+                }
+
+                if(scope.model && !scope.date) {
+                    scope.date = new Date(scope.model);
+                }
+
+                if(scope.model && !scope.time) {
+                    var currentDateTime = moment(scope.model);
+                    var time = currentDateTime.hour() + ':' + currentDateTime.minute();
+                    scope.time = time;
+                }
+            }
+
+            init();
+            scope.$watch('date', dateChanged);
+            scope.$watch('time', timeChanged);
+            scope.$watch('model', init);
+        }
+    };
+}
+
+DgFormDateTime.$inject = [
+    'moment',
+];
+
+angular.module('dugun.forms').directive('dgFormDateTime', DgFormDateTime);
+
+/**
+ * @ngdoc directive
  * @name dugun.forms:DgFormDateRange
  * @restrict 'E'
  * @scope
@@ -415,63 +494,6 @@ DgFormDateRange.$inject = [
 ];
 
 angular.module('dugun.forms').directive('dgFormDateRange', DgFormDateRange);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:DgFormDate
- * @restrict 'E'
- * @scope
- **/
-function DgFormDate(moment) {
-    return {
-        restrict: 'AEC',
-        scope: {
-            model: '=ngModel',
-            required: '=',
-            placeholder: '@',
-            id: '@dgId',
-            ngChange: '&'
-        },
-        templateUrl: 'form-elements/date/date.html',
-        link: function(scope, element, attrs) {
-            scope.attrs = attrs;
-
-            function dateChanged(newValue) {
-                if(!newValue) return;
-                if(newValue) {
-                    scope.model = moment(newValue).format('YYYY-MM-DD');
-                } else {
-                    delete scope.model;
-                }
-            }
-
-            // Initialize scope.dates with values from model.
-            function init() {
-                if(!scope.date) {
-                    scope.date = null;
-                }
-
-                if(scope.model && !scope.date) {
-                    scope.date = new Date(scope.model);
-                }
-
-                if(angular.isFunction(scope.ngChange)) {
-                    scope.ngChange({ model: scope.date });
-                }
-            }
-
-            init();
-            scope.$watch('date', dateChanged);
-            scope.$watch('model', init);
-        }
-    };
-}
-
-DgFormDate.$inject = [
-    'moment',
-];
-
-angular.module('dugun.forms').directive('dgFormDate', DgFormDate);
 
 /**
  * @ngdoc directive
@@ -558,6 +580,63 @@ function DgFormCheckbox() {
 }
 
 angular.module('dugun.forms').directive('dgFormCheckbox', DgFormCheckbox);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:DgFormDate
+ * @restrict 'E'
+ * @scope
+ **/
+function DgFormDate(moment) {
+    return {
+        restrict: 'AEC',
+        scope: {
+            model: '=ngModel',
+            required: '=',
+            placeholder: '@',
+            id: '@dgId',
+            ngChange: '&'
+        },
+        templateUrl: 'form-elements/date/date.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+
+            function dateChanged(newValue) {
+                if(!newValue) return;
+                if(newValue) {
+                    scope.model = moment(newValue).format('YYYY-MM-DD');
+                } else {
+                    delete scope.model;
+                }
+            }
+
+            // Initialize scope.dates with values from model.
+            function init() {
+                if(!scope.date) {
+                    scope.date = null;
+                }
+
+                if(scope.model && !scope.date) {
+                    scope.date = new Date(scope.model);
+                }
+
+                if(angular.isFunction(scope.ngChange)) {
+                    scope.ngChange({ model: scope.date });
+                }
+            }
+
+            init();
+            scope.$watch('date', dateChanged);
+            scope.$watch('model', init);
+        }
+    };
+}
+
+DgFormDate.$inject = [
+    'moment',
+];
+
+angular.module('dugun.forms').directive('dgFormDate', DgFormDate);
 
 /**
  * @ngdoc directive
