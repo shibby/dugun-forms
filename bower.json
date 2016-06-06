@@ -24,8 +24,7 @@
     "angular-jquery-timepicker": "^0.11.0"
   },
   "main": [
-    "dist/dugun-forms.js",
-    "dist/templates.js"
+    "dist/main.js"
   ],
   "devDependencies": {
     "angular-mocks": "^1.5.0"

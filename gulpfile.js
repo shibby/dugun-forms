@@ -4,6 +4,7 @@ var gulp = require('gulp'),
     ngHtml2Js = require('gulp-ng-html2js'),
     htmlmin = require('gulp-htmlmin'),
     htmlhint = require('gulp-htmlhint'),
+    clean = require('gulp-clean'),
     pipes = {},
     KarmaServer = require('karma').Server;
 
@@ -20,11 +21,12 @@ pipes.buildJS = function() {
 
 pipes.buildHTML = function() {
     return pipes.htmlSources()
-        // .pipe(plugins.htmlhint.failReporter())
+        .pipe(htmlhint({'doctype-first': false}))
         .pipe(htmlhint.reporter())
         .pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(ngHtml2Js({
-            moduleName: "dugun.forms"
+            moduleName: "dugun.forms",
+            declareModule: false
         }))
         .pipe(gulpConcat('templates.js'))
         .pipe(gulp.dest('dist/'));
@@ -38,6 +40,16 @@ pipes.htmlSources = function() {
     return gulp.src(source);
 };
 
+pipes.build = function() {
+    console.info('Building');
+
+    return gulp.src(['dist/dugun-forms.js', 'dist/templates.js'])
+        .pipe(clean({force: true}))
+        .pipe(gulpConcat('main.js'))
+        .pipe(gulp.dest('dist/'))
+        .pipe(gulp.src(['dist/dugun-forms.js', 'dist/templates.js'], {read: false}));
+};
+
 pipes.test = function(done) {
     new KarmaServer({
         configFile: __dirname + '/karma.conf.js',
@@ -45,9 +57,8 @@ pipes.test = function(done) {
 }
 
 gulp.task('build-js', pipes.buildJS);
+gulp.task('merge-js', pipes.mergeJS);
 gulp.task('build-html', pipes.buildHTML);
-gulp.task('build', ['build-js', 'build-html'], function() {
-    console.info('Building');
-});
+gulp.task('build', ['build-js', 'build-html'], pipes.build);
 
 gulp.task('test', pipes.test);
