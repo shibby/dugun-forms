@@ -139,22 +139,6 @@ angular.module('dugun.forms', [
 
 /**
  * @ngdoc directive
- * @name dugun.forms:dgFormRequiredAsterisk
- * @restrict 'E'
- * @scope
- **/
-function DgFormRequiredAsterisk() {
-    return {
-        restrict: 'ACE',
-        templateUrl: 'form-elements/required-asterisk/required-asterisk.html',
-        replace: true
-    };
-}
-
-angular.module('dugun.forms').directive('dgFormRequiredAsterisk', DgFormRequiredAsterisk);
-
-/**
- * @ngdoc directive
  * @name dugun.forms:DgFormTime
  * @restrict 'ACE'
  * @scope
@@ -164,7 +148,7 @@ function DgFormTime(moment) {
         restrict: 'AEC',
         scope: {
             model: '=ngModel',
-            required: '=',
+            required: '=ngRequired',
             placeholder: '@',
             id: '@dgId'
         },
@@ -324,6 +308,22 @@ function DgFormSelect2Multiple() {
 
 angular.module('dugun.forms')
     .directive('dgFormSelect2Multiple', DgFormSelect2Multiple);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormRequiredAsterisk
+ * @restrict 'E'
+ * @scope
+ **/
+function DgFormRequiredAsterisk() {
+    return {
+        restrict: 'ACE',
+        templateUrl: 'form-elements/required-asterisk/required-asterisk.html',
+        replace: true
+    };
+}
+
+angular.module('dugun.forms').directive('dgFormRequiredAsterisk', DgFormRequiredAsterisk);
 
 /**
  * @ngdoc directive
@@ -700,11 +700,6 @@ function DgFormBooleanSelect() {
 angular.module('dugun.forms')
     .directive('dgFormBooleanSelect', DgFormBooleanSelect);
 
-angular.module('ui.timepicker').value('uiTimepickerConfig',{
-    asMoment: true,
-    timeFormat: 'H:i'
-});
-
 /**
  * @ngdoc overview
  * @memberof dugun.forms.helpers
@@ -716,6 +711,11 @@ angular.module('dugun.forms.helpers', [
     'dugun.forms.helpers.uiSelectRequired',
     'dugun.forms.helpers.numberOnly',
 ]);
+
+angular.module('ui.timepicker').value('uiTimepickerConfig',{
+    asMoment: true,
+    timeFormat: 'H:i'
+});
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/boolean/boolean-select.html',
@@ -758,6 +758,11 @@ angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
+  $templateCache.put('form-elements/required-asterisk/required-asterisk.html',
+    '<i class="fa fa-asterisk red"></i>');
+}]);
+
+angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/select2/multiple.html',
     '<ui-select class="full-width" ng-model="$parent.model" theme="select2" ui-select-required="{{ required ? true : false }}" search-enabled="searchEnabled()" ng-attr-form="{{ attrs.form ? attrs.form : undefined }}" multiple="multiple"><ui-select-match placeholder="{{ placeholder }}" allow-clear="{{ allowClear }}"><div ng-bind="$item.name"></div></ui-select-match><ui-select-choices repeat="item.id as item in options | props: {name: $select.search}"><p ng-bind-html="item.name | highlight: $select.search"></p></ui-select-choices></ui-select>');
 }]);
@@ -780,9 +785,4 @@ angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/time/time.html',
     '<input class="form-control" ui-timepicker ng-model="time" ng-required="required" ng-attr-placeholder="{{ placeholder }}" ng-attr-id="{{ id || undefined }}" ng-attr-name="{{ attrs.dgName || undefined }}">');
-}]);
-
-angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/required-asterisk/required-asterisk.html',
-    '<i class="fa fa-asterisk red"></i>');
 }]);
