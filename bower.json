@@ -1,6 +1,6 @@
 {
   "name": "dugun-forms",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Easy to use directives to generate form fields",
   "authors": [
     "Ege Sertçetin"
