@@ -9,7 +9,7 @@ function DgFormDate(moment) {
         restrict: 'AEC',
         scope: {
             model: '=ngModel',
-            required: '=',
+            required: '=ngRequired',
             placeholder: '@',
             id: '@dgId',
             ngChange: '&'

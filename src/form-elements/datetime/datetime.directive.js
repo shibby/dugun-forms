@@ -9,7 +9,7 @@ function DgFormDateTime(moment) {
         restrict: 'ACE',
         scope: {
             model: '=ngModel',
-            required: '=',
+            required: '=ngRequired',
             placeholder: '@',
             id: '@dgId'
         },
