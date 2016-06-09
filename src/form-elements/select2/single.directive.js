@@ -10,15 +10,24 @@ function DgFormSelect2() {
         scope: {
             model: '=ngModel',
             options: '=',
+            idKey: '@',
+            valueKey: '@',
             allowClear: '@',
             required: '=ngRequired',
-            placeholder: '@',
             searchEnabled: '&',
             ngDisabled: '='
         },
         templateUrl: 'form-elements/select2/single.html',
         link: function(scope, element, attrs) {
             scope.attrs = attrs;
+
+            if(!scope.idKey) {
+                scope.idKey = 'id';
+            }
+
+            if(!scope.valueKey) {
+                scope.idKey = 'name';
+            }
         }
     };
 }

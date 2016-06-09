@@ -10,14 +10,24 @@ function DgFormSelect2Multiple() {
         scope: {
             model: '=ngModel',
             options: '=',
+            idKey: '@',
+            valueKey: '@',
             allowClear: '@',
             required: '=ngRequired',
-            placeholder: '@',
-            searchEnabled: '&'
+            searchEnabled: '&',
+            ngDisabled: '='
         },
         templateUrl: 'form-elements/select2/multiple.html',
         link: function(scope, element, attrs) {
             scope.attrs = attrs;
+
+            if(!scope.idKey) {
+                scope.idKey = 'id';
+            }
+
+            if(!scope.valueKey) {
+                scope.idKey = 'name';
+            }
         }
     };
 }

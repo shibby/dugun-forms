@@ -4,13 +4,13 @@
     theme="select2"
     ui-select-required="{{ required ? true : false }}"
     search-enabled="searchEnabled()"
-    ng-attr-form="{{ attrs.form ? attrs.form : undefined }}"
+    ng-attr-form="{{ attrs.form || undefined }}"
     ng-disabled="ngDisabled ? true : false"
 >
-    <ui-select-match placeholder="{{ placeholder }}" allow-clear="{{ allowClear }}">
-        <p ng-bind="$select.selected.name"></p>
+    <ui-select-match placeholder="{{ attrs.placeholder }}" allow-clear="{{ allowClear }}">
+        <p ng-bind="$select.selected[valueKey]"></p>
     </ui-select-match>
-    <ui-select-choices repeat="item.id as item in options | props: {name: $select.search}">
-        <p ng-bind-html="item.name | highlight: $select.search"></p>
+    <ui-select-choices repeat="item[idKey] as item in options | props:idKey:$select.search">
+        <p ng-bind-html="item[valueKey] | highlight: $select.search"></p>
     </ui-select-choices>
 </ui-select>
