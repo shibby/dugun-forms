@@ -33,17 +33,11 @@ function DgFormTime(moment) {
                 }
 
                 if(scope.model && !scope.time) {
-                    // scope.time = new Date(scope.model);
                     var time = moment(),
                         modelSplit = scope.model.split(':');
 
                     time = time.hour(modelSplit[0]).minute(modelSplit[1]);
-                    //console.log(time.format('YYYY-MM-DD HH:mm'));
-                    // console.log(time);
                     scope.time = time;
-
-                    //console.log(time);
-                    //console.log(scope.model);
                 }
             }
 
