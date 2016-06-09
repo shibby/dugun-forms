@@ -27,4 +27,38 @@ describe('dgFormText directive', function() {
         var form = $rootScope.form;
         expect(form.numberField).toBeTruthy();
     });
+
+    it('ngDisabled=true works as expected', function() {
+        $rootScope.model = null;
+        var element = $compile(
+            '<form name="form">' +
+            '<dg-form-text dg-name="numberField" ng-model="model" ng-disabled="isDisabled"></dg-form-text>' +
+            '</form>'
+        )($rootScope);
+        $rootScope.$digest();
+
+        expect(element.find('[name="numberField"]').prop('disabled')).toBe(false);
+
+        $rootScope.isDisabled = true;
+        $rootScope.$digest();
+
+        expect(element.find('[name="numberField"]').prop('disabled')).toBe(true);
+    });
+
+    it('ngDisabled=false works as expected', function() {
+        $rootScope.model = null;
+        var element = $compile(
+            '<form name="form">' +
+            '<dg-form-text dg-name="numberField" ng-model="model" ng-disabled="isDisabled"></dg-form-text>' +
+            '</form>'
+        )($rootScope);
+        $rootScope.$digest();
+
+        expect(element.find('[name="numberField"]').prop('disabled')).toBe(false);
+
+        $rootScope.isDisabled = false;
+        $rootScope.$digest();
+
+        expect(element.find('[name="numberField"]').prop('disabled')).toBe(false);
+    });
 });

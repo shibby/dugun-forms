@@ -10,10 +10,7 @@ function DgFormTextarea() {
         scope: {
             model: '=ngModel',
             required: '=ngRequired',
-            maxlength: '@',
-            dgId: '@',
-            rows: '@',
-            style: "@"
+            ngDisabled: '='
         },
         templateUrl: 'form-elements/textarea/textarea.html',
         link: function(scope, element, attrs) {
