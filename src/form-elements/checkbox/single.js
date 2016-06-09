@@ -17,7 +17,7 @@ function DgFormCheckbox() {
             label: '@',
             labelTemplate: '@'
         },
-        templateUrl: 'form-elements/checkbox/template.html'
+        templateUrl: 'form-elements/checkbox/single.html'
     };
 }
 
