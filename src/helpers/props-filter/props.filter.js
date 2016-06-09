@@ -1,7 +1,10 @@
 angular.module('dugun.forms.helpers.propsFilter')
     .filter('props', function() {
-        return function(items, props) {
-            var out = [];
+        return function(items, id, value) {
+            var out = [],
+                props = {};
+
+            props[id] = value;
 
             if(angular.isArray(items)) {
                 items.forEach(function(item) {
