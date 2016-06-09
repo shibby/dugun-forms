@@ -14,7 +14,6 @@ function DgFormDateRange(moment) {
             min: '=',
             max: '=',
             options: '=',
-            placeholder: '@',
             clearable: '='
         },
         templateUrl: 'form-elements/date-range/date-range.html',

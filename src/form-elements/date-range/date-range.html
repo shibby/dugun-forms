@@ -6,9 +6,10 @@
     min="min"
     max="max"
     options="options"
-    placeholder="{{ placeholder }}"
     clearable="clearable"
     ng-required="required"
     ng-attr-form="{{ attrs.form ? attrs.form : undefined }}"
     ng-attr-name="{{ attrs.dgName ? attrs.dgName : undefined }}"
+    ng-attr-placeholder="{{ attrs.placeholder || undefined }}"
+    ng-attr-id="{{ attrs.dgId || undefined }}"
 >
