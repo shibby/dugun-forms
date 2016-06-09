@@ -14,8 +14,7 @@ function DgFormBooleanSelect() {
             labelFalse: '@',
             valueTrue: '&',
             valueFalse: '&',
-            required: '=ngRequired',
-            placeholder: '@'
+            required: '=ngRequired'
         },
         templateUrl: 'form-elements/boolean/boolean-select.html',
         link: function(scope) {
