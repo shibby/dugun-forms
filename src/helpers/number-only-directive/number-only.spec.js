@@ -11,8 +11,8 @@ describe('numberOnly directive', function() {
         $rootScope.modelNumber = null;
         var element = $compile(
             '<form name="form">' +
-            '<dg-form-text name="numberField" type="number" number-only="true" ng-model="modelNumber"></dg-form-text>' +
-            '<dg-form-text name="textField" number-only="true" ng-model="modelNumber"></dg-form-text>' +
+            '<dg-form-text dg-name="numberField" type="number" number-only="true" ng-model="modelNumber"></dg-form-text>' +
+            '<dg-form-text dg-name="textField" number-only="true" ng-model="modelNumber"></dg-form-text>' +
             '</form>'
         )($rootScope);
         $rootScope.$digest();
