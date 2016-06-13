@@ -12,6 +12,6 @@ describe('dgFormSelect2Multiple directive', function() {
     it('compiles the code', (function() {
         var element = $compile('<dg-form-select2-multiple options="[{id: 1, name: \'a\'}]"></dg-form-select2-multiple>')($rootScope);
         $rootScope.$digest();
-        expect($(element).find('.ui-select-container.select2.ui-select-multiple').length).toBeTruthy();
+        expect($(element).find('.ui-select-container.ui-select-multiple').length).toBeTruthy();
     }));
 });

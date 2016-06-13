@@ -12,6 +12,6 @@ describe('dgFormSelect2 directive', function() {
     it('compiles the code', (function() {
         var element = $compile('<dg-form-select2 options="[{id: 1, name: \'a\'}]"></dg-form-select2>')($rootScope);
         $rootScope.$digest();
-        expect($(element).find('.ui-select-container.select2').length).toBeTruthy();
+        expect($(element).find('.ui-select-container').length).toBeTruthy();
     }));
 });
