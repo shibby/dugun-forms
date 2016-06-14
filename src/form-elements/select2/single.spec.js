@@ -29,7 +29,5 @@ describe('dgFormSelect2 directive', function() {
         uiSelectScope.$digest();
 
         expect($(element).find('.ui-select-choices-row-inner p').first().text()).toBe('first');
-
-        console.log($(element).find('.ui-select-choices-row-inner p').first().text());
     });
 });
