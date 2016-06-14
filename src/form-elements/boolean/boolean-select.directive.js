@@ -17,7 +17,7 @@ function DgFormBooleanSelect() {
             required: '=ngRequired'
         },
         templateUrl: 'form-elements/boolean/boolean-select.html',
-        link: function(scope) {
+        link: function(scope, element, attrs) {
             var options = [];
 
             options.push({
@@ -30,6 +30,7 @@ function DgFormBooleanSelect() {
             });
 
             scope.options = options;
+            scope.attrs = attrs;
         }
     };
 }
