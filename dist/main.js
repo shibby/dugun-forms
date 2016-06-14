@@ -310,16 +310,18 @@ function DgFormSelect2Multiple() {
         },
         templateUrl: 'form-elements/select2/multiple.html',
         compile: function(element, attrs) {
-            // set the defaults
-            if(!attrs.idKey) {
-                attrs.idKey = 'id';
+            return {
+                pre: function(scope, element, attrs) {
+                    // set the defaults
+                    if(!attrs.idKey) {
+                        attrs.idKey = 'id';
+                    }
+                    if(!attrs.valueKey) {
+                        attrs.valueKey = 'name';
+                    }
+                    scope.attrs = attrs;
+                }
             }
-            if(!attrs.valueKey) {
-                attrs.valueKey = 'name';
-            }
-        },
-        link: function(scope, element, attrs) {
-            scope.attrs = attrs;
         }
     };
 }
