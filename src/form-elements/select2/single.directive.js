@@ -19,16 +19,18 @@ function DgFormSelect2() {
         },
         templateUrl: 'form-elements/select2/single.html',
         compile: function(element, attrs) {
-            // set the defaults
-            if(!attrs.idKey) {
-                attrs.idKey = 'id';
-            }
-            if(!attrs.valueKey) {
-                attrs.valueKey = 'name';
-            }
-        },
-        link: function(scope, element, attrs) {
-            scope.attrs = attrs;
+            return {
+                pre: function preLink(scope, element, attrs) {
+                    // set the defaults
+                    if(!attrs.idKey) {
+                        attrs.idKey = 'id';
+                    }
+                    if(!attrs.valueKey) {
+                        attrs.valueKey = 'name';
+                    }
+                    scope.attrs = attrs;
+                }
+            };
         }
     };
 }
