@@ -18,7 +18,7 @@ function DgFormText() {
             mask: '@',
             disableLength: '&',
             numberOnly: '&',
-            addOnRight: '@'
+            addonRight: '@'
         },
         templateUrl: 'form-elements/text-input/text-input.html',
         link: function(scope, element, attrs) {

@@ -1,7 +1,7 @@
 <input
     type="{{ type || 'text' }}"
     class="form-control full-width"
-    ng-if="(!maxlength || disableLength()) && !addOnRight"
+    ng-if="(!maxlength || disableLength()) && !addonRight"
     ng-model="$parent.model"
     ng-required="required"
     ui-mask="{{ mask || '' }}"
@@ -26,7 +26,7 @@
     ng-model-options="ngModelOptions || {}"
 >
 
-<div class="input-group" ng-if="(maxlength && !disableLength()) || addOnRight">
+<div class="input-group" ng-if="(maxlength && !disableLength()) || addonRight">
     <input
         type="{{ type || 'text' }}"
         class="form-control"
@@ -54,6 +54,6 @@
     >
     <div
         class="input-group-addon"
-        ng-bind="addOnRight || (maxlength - model.length)"
+        ng-bind="addonRight || (maxlength - model.length)"
     ></div>
 </div>
