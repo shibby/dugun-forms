@@ -33,6 +33,10 @@ function DgFormDate(moment) {
                     scope.date = null;
                 }
 
+                if(angular.isDate(scope.model)) {
+                    scope.model = moment(scope.model).format('YYYY-MM-DD');
+                }
+
                 if(scope.model && !scope.date) {
                     scope.date = new Date(scope.model);
                 }
