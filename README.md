@@ -31,20 +31,20 @@
 
 #### Date-Range-Picker
 ```html
-                    <input
-                            date-range-picker
-                            class="form-control date-picker opensleft"
-                            type="text"
-                            ng-model="dates"
-                            min="null"
-                            max="today"
-                            options="{ opens: 'left' }"
-                            placeholder="Tarih aralığı"
-                    >
+<input
+        date-range-picker
+        class="form-control date-picker opensleft"
+        type="text"
+        ng-model="dates"
+        min="null"
+        max="today"
+        options="{ opens: 'left' }"
+        placeholder="Tarih aralığı"
+>
 ```
 ```js
 $scope.dates = {
-        startDate: moment().startOf('month'),
-        endDate: moment()
-    };
-    ```
+    startDate: moment().startOf('month'),
+    endDate: moment()
+};
+```
