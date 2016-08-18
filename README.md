@@ -1,5 +1,16 @@
 ## Dugun-Forms
 
+### Build
+
+- Install Dependencies
+
+    `npm install && bower install`
+    
+- Run build function 
+
+    `gulp build`
+    
+
 ### Installation
 
 - Add repository as dependency on your bower.json
