@@ -73,131 +73,6 @@ DgFormTime.$inject = [
 angular.module('dugun.forms').directive('dgFormTime', DgFormTime);
 
 /**
- * @ngdoc overview
- * @memberof dugun.forms.helpers.uiSelectRequired
- * @description
- * description
- */
-angular.module('dugun.forms.helpers.uiSelectRequired', []);
-
-function UISelectRequiredDirective() {
-    return {
-        require: 'ngModel',
-        link: function (scope, element, attrs, ngModel) {
-            var selectElement = $('<select class="hidden-select"></select>')
-                .prop('required', true);
-            if(attrs.form) {
-                selectElement.attr('form', attrs.form);
-            }
-
-            scope.$watch(function () {
-                return ngModel.$modelValue;
-            }, function (newValue) {
-                if(typeof newValue !== 'undefined' && newValue !== null) {
-                    selectElement.append('<option value="'+ newValue +'"></option>')
-                        .find('option:last-child')
-                        .prop('selected', true);
-                } else {
-                    selectElement.find('option').remove();
-                }
-            });
-
-            // Remove the hidden select if required is false
-            scope.$watch(function() {
-                return attrs.uiSelectRequired;
-            }, function(newValue) {
-                if(newValue === 'true') {
-                    $(element).after(selectElement);
-                } else {
-                    $(selectElement).remove();
-                }
-            });
-        }
-    };
-}
-
-angular.module('dugun.forms.helpers.uiSelectRequired')
-    .directive('uiSelectRequired', UISelectRequiredDirective);
-
-/**
- * @ngdoc overview
- * @memberof dugun.forms.helpers.numberOnly
- * @description
- * description
- */
-angular.module('dugun.forms.helpers.numberOnly', []);
-
-// Source from: http://stackoverflow.com/questions/19036443/angularjs-how-to-allow-only-a-number-digits-and-decimal-point-to-be-typed-in
-// Author: Nishchit Dhanani
-// Written on: 2013-11-14
-function NumberOnlyDirective($window) {
-    return {
-        require: 'ngModel',
-        link: function(scope, element, attrs, modelCtrl) {
-            if(attrs.numberOnly === 'true') {
-                modelCtrl.$formatters.push(function (inputValue) {
-                    return $window.parseFloat(inputValue);
-                });
-            }
-        }
-    };
-}
-
-NumberOnlyDirective.$inject = [
-    '$window',
-];
-
-angular.module('dugun.forms.helpers.numberOnly')
-    .directive('numberOnly', NumberOnlyDirective);
-
-/**
- * @ngdoc overview
- * @memberof dugun.forms.helpers.propsFilter
- * @description
- * Property filter
- */
-angular.module('dugun.forms.helpers.propsFilter', []);
-
-angular.module('dugun.forms.helpers.propsFilter')
-    .filter('props', function() {
-        return function(items, id, value) {
-            var out = [],
-                props = {};
-
-            props[id] = value;
-
-            if(angular.isArray(items)) {
-                items.forEach(function(item) {
-                    var itemMatches = false;
-
-                    var keys = Object.keys(props);
-                    for (var i = 0; i < keys.length; i++) {
-                        var prop = keys[i];
-                        var text = props[prop].toLowerCase();
-                        if(typeof item === 'undefined' || typeof item[prop] === 'undefined') {
-                            itemMatches = false;
-                            break;
-                        }
-                        if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
-                            itemMatches = true;
-                            break;
-                        }
-                    }
-
-                    if (itemMatches) {
-                        out.push(item);
-                    }
-                });
-            } else {
-                // Let the output be the input untouched
-                out = items;
-            }
-
-            return out;
-        };
-    });
-
-/**
  * @ngdoc directive
  * @name dgFormTextarea
  * @restrict 'E'
@@ -219,6 +94,37 @@ function DgFormTextarea() {
 }
 
 angular.module('dugun.forms').directive('dgFormTextarea', DgFormTextarea);
+
+/**
+ * @ngdoc directive
+ * @name dgFormText
+ * @restrict 'E'
+ * @scope
+ **/
+function DgFormText() {
+    return {
+        restrict: 'E',
+        scope: {
+            model: '=ngModel',
+            ngModelOptions: '=',
+            required: '=ngRequired',
+            ngDisabled: '=',
+            maxlength: '@',
+            readonly: '=',
+            type: '@',
+            mask: '@',
+            disableLength: '&',
+            numberOnly: '&',
+            addonRight: '@'
+        },
+        templateUrl: 'form-elements/text-input/text-input.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+        }
+    };
+}
+
+angular.module('dugun.forms').directive('dgFormText', DgFormText);
 
 /**
  * @ngdoc directive
@@ -301,105 +207,6 @@ angular.module('dugun.forms')
 
 /**
  * @ngdoc directive
- * @name dgFormText
- * @restrict 'E'
- * @scope
- **/
-function DgFormText() {
-    return {
-        restrict: 'E',
-        scope: {
-            model: '=ngModel',
-            ngModelOptions: '=',
-            required: '=ngRequired',
-            ngDisabled: '=',
-            maxlength: '@',
-            readonly: '=',
-            type: '@',
-            mask: '@',
-            disableLength: '&',
-            numberOnly: '&',
-            addonRight: '@'
-        },
-        templateUrl: 'form-elements/text-input/text-input.html',
-        link: function(scope, element, attrs) {
-            scope.attrs = attrs;
-        }
-    };
-}
-
-angular.module('dugun.forms').directive('dgFormText', DgFormText);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:DgFormDateRange
- * @restrict 'E'
- * @scope
- **/
-function DgFormDateRange(moment) {
-    return {
-        restrict: 'AEC',
-        scope: {
-            modelStart: '=ngModelStart',
-            modelEnd: '=ngModelEnd',
-            required: '=ngRequired',
-            min: '=',
-            max: '=',
-            options: '=',
-            clearable: '='
-        },
-        templateUrl: 'form-elements/date-range/date-range.html',
-        link: function(scope, element, attrs) {
-            scope.attrs = attrs;
-            scope.dates = {startDate: null, endDate: null};
-
-            function datesChanged(newValue) {
-                if(!newValue) return;
-                if(newValue.startDate) {
-                    scope.modelStart = newValue.startDate.format('YYYY-MM-DD');
-                } else {
-                    delete scope.modelStart;
-                }
-                if(newValue.endDate) {
-                    scope.modelEnd = newValue.endDate.format('YYYY-MM-DD');
-                } else {
-                    delete scope.modelEnd;
-                }
-            }
-
-            // Initialize scope.dates with values from model.
-            function init() {
-                if(
-                    (scope.modelStart && !scope.dates.startDate) ||
-                    (scope.modelEnd && !scope.dates.endDate)
-                ) {
-                    scope.dates = {
-                        startDate: moment(scope.modelStart),
-                        endDate: moment(scope.modelEnd),
-                    };
-                }
-
-                if(!scope.modelStart || !scope.modelEnd) {
-                    scope.dates = {startDate: null, endDate: null};
-                }
-            }
-
-            init();
-            scope.$watch('modelStart', init);
-            scope.$watch('modelEnd', init);
-            scope.$watch('dates', datesChanged, true);
-        }
-    };
-}
-
-DgFormDateRange.$inject = [
-    'moment',
-];
-
-angular.module('dugun.forms').directive('dgFormDateRange', DgFormDateRange);
-
-/**
- * @ngdoc directive
  * @name dugun.forms:dgFormRequiredAsterisk
  * @restrict 'E'
  * @scope
@@ -413,6 +220,28 @@ function DgFormRequiredAsterisk() {
 }
 
 angular.module('dugun.forms').directive('dgFormRequiredAsterisk', DgFormRequiredAsterisk);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormRadio
+ * @restrict 'ACE'
+ * @scope
+ **/
+function DgFormRadio() {
+    return {
+        restrict: 'ACE',
+        transclude: true,
+        scope: {
+            model: '=ngModel',
+            options: '=',
+            required: '=ngRequired',
+            name: '@dgName'
+        },
+        templateUrl: 'form-elements/radio/template.html'
+    };
+}
+
+angular.module('dugun.forms').directive('dgFormRadio', DgFormRadio);
 
 /**
  * @ngdoc directive
@@ -495,25 +324,71 @@ angular.module('dugun.forms').directive('dgFormDateTime', DgFormDateTime);
 
 /**
  * @ngdoc directive
- * @name dugun.forms:dgFormRadio
- * @restrict 'ACE'
+ * @name dugun.forms:DgFormDateRange
+ * @restrict 'E'
  * @scope
  **/
-function DgFormRadio() {
+function DgFormDateRange(moment) {
     return {
-        restrict: 'ACE',
-        transclude: true,
+        restrict: 'AEC',
         scope: {
-            model: '=ngModel',
-            options: '=',
+            modelStart: '=ngModelStart',
+            modelEnd: '=ngModelEnd',
             required: '=ngRequired',
-            name: '@dgName'
+            min: '=',
+            max: '=',
+            options: '=',
+            clearable: '='
         },
-        templateUrl: 'form-elements/radio/template.html'
+        templateUrl: 'form-elements/date-range/date-range.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+            scope.dates = {startDate: null, endDate: null};
+
+            function datesChanged(newValue) {
+                if(!newValue) return;
+                if(newValue.startDate) {
+                    scope.modelStart = newValue.startDate.format('YYYY-MM-DD');
+                } else {
+                    delete scope.modelStart;
+                }
+                if(newValue.endDate) {
+                    scope.modelEnd = newValue.endDate.format('YYYY-MM-DD');
+                } else {
+                    delete scope.modelEnd;
+                }
+            }
+
+            // Initialize scope.dates with values from model.
+            function init() {
+                if(
+                    (scope.modelStart && !scope.dates.startDate) ||
+                    (scope.modelEnd && !scope.dates.endDate)
+                ) {
+                    scope.dates = {
+                        startDate: moment(scope.modelStart),
+                        endDate: moment(scope.modelEnd),
+                    };
+                }
+
+                if(!scope.modelStart || !scope.modelEnd) {
+                    scope.dates = {startDate: null, endDate: null};
+                }
+            }
+
+            init();
+            scope.$watch('modelStart', init);
+            scope.$watch('modelEnd', init);
+            scope.$watch('dates', datesChanged, true);
+        }
     };
 }
 
-angular.module('dugun.forms').directive('dgFormRadio', DgFormRadio);
+DgFormDateRange.$inject = [
+    'moment',
+];
+
+angular.module('dugun.forms').directive('dgFormDateRange', DgFormDateRange);
 
 /**
  * @ngdoc directive
@@ -526,6 +401,7 @@ function DgFormDate(moment) {
         restrict: 'AEC',
         scope: {
             model: '=ngModel',
+            format: '@',
             required: '=ngRequired',
             placeholder: '@',
             id: '@dgId',
@@ -535,10 +411,14 @@ function DgFormDate(moment) {
         link: function(scope, element, attrs) {
             scope.attrs = attrs;
 
+            if(!scope.format){
+                scope.format = 'YYYY-MM-DD';
+            }
+
             function dateChanged(newValue) {
                 if(!newValue) return;
                 if(newValue) {
-                    scope.model = moment(newValue).format('YYYY-MM-DD');
+                    scope.model = moment(newValue).format(scope.format);
                 } else {
                     delete scope.model;
                 }
@@ -726,6 +606,131 @@ angular.module('dugun.forms')
 
 /**
  * @ngdoc overview
+ * @memberof dugun.forms.helpers.numberOnly
+ * @description
+ * description
+ */
+angular.module('dugun.forms.helpers.numberOnly', []);
+
+// Source from: http://stackoverflow.com/questions/19036443/angularjs-how-to-allow-only-a-number-digits-and-decimal-point-to-be-typed-in
+// Author: Nishchit Dhanani
+// Written on: 2013-11-14
+function NumberOnlyDirective($window) {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, modelCtrl) {
+            if(attrs.numberOnly === 'true') {
+                modelCtrl.$formatters.push(function (inputValue) {
+                    return $window.parseFloat(inputValue);
+                });
+            }
+        }
+    };
+}
+
+NumberOnlyDirective.$inject = [
+    '$window',
+];
+
+angular.module('dugun.forms.helpers.numberOnly')
+    .directive('numberOnly', NumberOnlyDirective);
+
+/**
+ * @ngdoc overview
+ * @memberof dugun.forms.helpers.uiSelectRequired
+ * @description
+ * description
+ */
+angular.module('dugun.forms.helpers.uiSelectRequired', []);
+
+function UISelectRequiredDirective() {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attrs, ngModel) {
+            var selectElement = $('<select class="hidden-select"></select>')
+                .prop('required', true);
+            if(attrs.form) {
+                selectElement.attr('form', attrs.form);
+            }
+
+            scope.$watch(function () {
+                return ngModel.$modelValue;
+            }, function (newValue) {
+                if(typeof newValue !== 'undefined' && newValue !== null) {
+                    selectElement.append('<option value="'+ newValue +'"></option>')
+                        .find('option:last-child')
+                        .prop('selected', true);
+                } else {
+                    selectElement.find('option').remove();
+                }
+            });
+
+            // Remove the hidden select if required is false
+            scope.$watch(function() {
+                return attrs.uiSelectRequired;
+            }, function(newValue) {
+                if(newValue === 'true') {
+                    $(element).after(selectElement);
+                } else {
+                    $(selectElement).remove();
+                }
+            });
+        }
+    };
+}
+
+angular.module('dugun.forms.helpers.uiSelectRequired')
+    .directive('uiSelectRequired', UISelectRequiredDirective);
+
+/**
+ * @ngdoc overview
+ * @memberof dugun.forms.helpers.propsFilter
+ * @description
+ * Property filter
+ */
+angular.module('dugun.forms.helpers.propsFilter', []);
+
+angular.module('dugun.forms.helpers.propsFilter')
+    .filter('props', function() {
+        return function(items, id, value) {
+            var out = [],
+                props = {};
+
+            props[id] = value;
+
+            if(angular.isArray(items)) {
+                items.forEach(function(item) {
+                    var itemMatches = false;
+
+                    var keys = Object.keys(props);
+                    for (var i = 0; i < keys.length; i++) {
+                        var prop = keys[i];
+                        var text = props[prop].toLowerCase();
+                        if(typeof item === 'undefined' || typeof item[prop] === 'undefined') {
+                            itemMatches = false;
+                            break;
+                        }
+                        if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+                            itemMatches = true;
+                            break;
+                        }
+                    }
+
+                    if (itemMatches) {
+                        out.push(item);
+                    }
+                });
+            } else {
+                // Let the output be the input untouched
+                out = items;
+            }
+
+            return out;
+        };
+    });
+
+/**
+ * @ngdoc overview
  * @memberof dugun.forms.helpers
  * @description
  * Helpers
@@ -777,8 +782,8 @@ angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/radio/template.html',
-    '<div class="radio" ng-repeat="option in options"><label><input type="radio" ng-model="$parent.model" ng-value="option.id" ng-required="{{ required ? true : false }}" name="{{ name }}"> <span ng-bind="option.name"></span></label></div>');
+  $templateCache.put('form-elements/date-range/date-range.html',
+    '<input date-range-picker class="form-control full-width date-picker" type="text" ng-model="dates" min="min" max="max" options="options" clearable="clearable" ng-required="required" ng-attr-form="{{ attrs.form ? attrs.form : undefined }}" ng-attr-name="{{ attrs.dgName ? attrs.dgName : undefined }}" ng-attr-placeholder="{{ attrs.placeholder || undefined }}" ng-attr-id="{{ attrs.dgId || undefined }}">');
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
@@ -787,18 +792,13 @@ angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
+  $templateCache.put('form-elements/radio/template.html',
+    '<div class="radio" ng-repeat="option in options"><label><input type="radio" ng-model="$parent.model" ng-value="option.id" ng-required="{{ required ? true : false }}" name="{{ name }}"> <span ng-bind="option.name"></span></label></div>');
+}]);
+
+angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/required-asterisk/required-asterisk.html',
     '<i class="fa fa-asterisk red"></i>');
-}]);
-
-angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/date-range/date-range.html',
-    '<input date-range-picker class="form-control full-width date-picker" type="text" ng-model="dates" min="min" max="max" options="options" clearable="clearable" ng-required="required" ng-attr-form="{{ attrs.form ? attrs.form : undefined }}" ng-attr-name="{{ attrs.dgName ? attrs.dgName : undefined }}" ng-attr-placeholder="{{ attrs.placeholder || undefined }}" ng-attr-id="{{ attrs.dgId || undefined }}">');
-}]);
-
-angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/text-input/text-input.html',
-    '<input type="{{ type || \'text\' }}" class="form-control full-width" ng-if="(!maxlength || disableLength()) && !addonRight" ng-model="$parent.model" ng-required="required" ui-mask="{{ mask || \'\' }}" ng-attr-min="{{ attrs.min || undefined }}" ng-attr-max="{{ attrs.max || undefined }}" ng-attr-step="{{ attrs.step || undefined }}" ng-attr-form="{{ attrs.form || undefined }}" ng-attr-name="{{ attrs.dgName || undefined }}" ng-attr-placeholder="{{ attrs.placeholder || undefined }}" ng-attr-id="{{ attrs.dgId || undefined }}" ng-attr-autocomplete="{{ attrs.autocomplete || undefined }}" ng-attr-inputmode="{{ attrs.inputmode || undefined }}" ng-attr-list="{{ attrs.list || undefined }}" ng-attr-maxlength="{{ attrs.maxlength || undefined }}" ng-pattern="{{ attrs.pattern || undefined }}" ng-readonly="readonly" ng-attr-size="{{ attrs.size || undefined }}" ng-attr-spellcheck="{{ attrs.spellcheck || undefined }}" ng-attr-tabindex="{{ attrs.tabindex || undefined }}" ng-disabled="ngDisabled" number-only="{{ numberOnly() ? \'true\' : \'\' }}" ng-model-options="ngModelOptions || {}"><div class="input-group" ng-if="(maxlength && !disableLength()) || addonRight"><input type="{{ type || \'text\' }}" class="form-control" ng-model="$parent.model" ng-required="required" ng-attr-min="{{ attrs.min || undefined }}" ng-attr-max="{{ attrs.max || undefined }}" ng-attr-step="{{ attrs.step || undefined }}" ng-attr-form="{{ attrs.form || undefined }}" ng-attr-name="{{ attrs.dgName || undefined }}" ng-attr-placeholder="{{ attrs.placeholder || undefined }}" ng-attr-id="{{ attrs.dgId || undefined }}" ng-attr-autocomplete="{{ attrs.autocomplete || undefined }}" ng-attr-inputmode="{{ attrs.inputmode || undefined }}" ng-attr-list="{{ attrs.list || undefined }}" ng-attr-maxlength="{{ attrs.maxlength || undefined }}" ng-pattern="{{ attrs.pattern || undefined }}" ng-readonly="readonly" ng-attr-size="{{ attrs.size || undefined }}" ng-attr-spellcheck="{{ attrs.spellcheck || undefined }}" ng-attr-tabindex="{{ attrs.tabindex || undefined }}" ng-disabled="ngDisabled" number-only="{{ numberOnly() ? \'true\' : \'\' }}" ng-model-options="ngModelOptions || {}"><div class="input-group-addon" ng-bind="addonRight || (maxlength - model.length)"></div></div>');
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
@@ -809,6 +809,11 @@ angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/select2/single.html',
     '<ui-select class="full-width" ng-model="$parent.model" ui-select-required="{{ required ? true : false }}" search-enabled="searchEnabled()" ng-attr-form="{{ attrs.form || undefined }}" ng-disabled="ngDisabled ? true : false"><ui-select-match placeholder="{{ attrs.placeholder }}" allow-clear="{{ allowClear }}"><p ng-bind="$select.selected[valueKey]"></p></ui-select-match><ui-select-choices repeat="item[idKey] as item in options | props:valueKey:$select.search"><p ng-bind-html="item[valueKey] | highlight: $select.search"></p></ui-select-choices></ui-select>');
+}]);
+
+angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
+  $templateCache.put('form-elements/text-input/text-input.html',
+    '<input type="{{ type || \'text\' }}" class="form-control full-width" ng-if="(!maxlength || disableLength()) && !addonRight" ng-model="$parent.model" ng-required="required" ui-mask="{{ mask || \'\' }}" ng-attr-min="{{ attrs.min || undefined }}" ng-attr-max="{{ attrs.max || undefined }}" ng-attr-step="{{ attrs.step || undefined }}" ng-attr-form="{{ attrs.form || undefined }}" ng-attr-name="{{ attrs.dgName || undefined }}" ng-attr-placeholder="{{ attrs.placeholder || undefined }}" ng-attr-id="{{ attrs.dgId || undefined }}" ng-attr-autocomplete="{{ attrs.autocomplete || undefined }}" ng-attr-inputmode="{{ attrs.inputmode || undefined }}" ng-attr-list="{{ attrs.list || undefined }}" ng-attr-maxlength="{{ attrs.maxlength || undefined }}" ng-pattern="{{ attrs.pattern || undefined }}" ng-readonly="readonly" ng-attr-size="{{ attrs.size || undefined }}" ng-attr-spellcheck="{{ attrs.spellcheck || undefined }}" ng-attr-tabindex="{{ attrs.tabindex || undefined }}" ng-disabled="ngDisabled" number-only="{{ numberOnly() ? \'true\' : \'\' }}" ng-model-options="ngModelOptions || {}"><div class="input-group" ng-if="(maxlength && !disableLength()) || addonRight"><input type="{{ type || \'text\' }}" class="form-control" ng-model="$parent.model" ng-required="required" ng-attr-min="{{ attrs.min || undefined }}" ng-attr-max="{{ attrs.max || undefined }}" ng-attr-step="{{ attrs.step || undefined }}" ng-attr-form="{{ attrs.form || undefined }}" ng-attr-name="{{ attrs.dgName || undefined }}" ng-attr-placeholder="{{ attrs.placeholder || undefined }}" ng-attr-id="{{ attrs.dgId || undefined }}" ng-attr-autocomplete="{{ attrs.autocomplete || undefined }}" ng-attr-inputmode="{{ attrs.inputmode || undefined }}" ng-attr-list="{{ attrs.list || undefined }}" ng-attr-maxlength="{{ attrs.maxlength || undefined }}" ng-pattern="{{ attrs.pattern || undefined }}" ng-readonly="readonly" ng-attr-size="{{ attrs.size || undefined }}" ng-attr-spellcheck="{{ attrs.spellcheck || undefined }}" ng-attr-tabindex="{{ attrs.tabindex || undefined }}" ng-disabled="ngDisabled" number-only="{{ numberOnly() ? \'true\' : \'\' }}" ng-model-options="ngModelOptions || {}"><div class="input-group-addon" ng-bind="addonRight || (maxlength - model.length)"></div></div>');
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {

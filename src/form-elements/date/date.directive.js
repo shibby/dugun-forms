@@ -9,6 +9,7 @@ function DgFormDate(moment) {
         restrict: 'AEC',
         scope: {
             model: '=ngModel',
+            format: '@',
             required: '=ngRequired',
             placeholder: '@',
             id: '@dgId',
@@ -18,10 +19,14 @@ function DgFormDate(moment) {
         link: function(scope, element, attrs) {
             scope.attrs = attrs;
 
+            if(!scope.format){
+                scope.format = 'YYYY-MM-DD';
+            }
+
             function dateChanged(newValue) {
                 if(!newValue) return;
                 if(newValue) {
-                    scope.model = moment(newValue).format('YYYY-MM-DD');
+                    scope.model = moment(newValue).format(scope.format);
                 } else {
                     delete scope.model;
                 }
