@@ -13,6 +13,7 @@ function DgFormHtml() {
             ngDisabled: '=',
             maxlength: '@',
             taToolbar: '=',
+            taTargetToolbars: '@',
             readonly: '=',
         },
         templateUrl: 'form-elements/html/template.html',

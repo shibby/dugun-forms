@@ -384,6 +384,7 @@ function DgFormHtml() {
             ngDisabled: '=',
             maxlength: '@',
             taToolbar: '=',
+            taTargetToolbars: '@',
             readonly: '=',
         },
         templateUrl: 'form-elements/html/template.html',
@@ -473,6 +474,92 @@ DgFormDateTime.$inject = [
 ];
 
 angular.module('dugun.forms').directive('dgFormDateTime', DgFormDateTime);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormCheckbox
+ * @restrict 'ACE'
+ * @scope
+ **/
+function DgFormCheckbox() {
+    return {
+        restrict: 'ACE',
+        transclude: true,
+        scope: {
+            model: '=ngModel',
+            required: '=ngRequired',
+            trueValue: '=',
+            falseValue: '=',
+            name: '@dgName',
+            label: '@',
+            labelTemplate: '@'
+        },
+        templateUrl: 'form-elements/checkbox/single.html'
+    };
+}
+
+angular.module('dugun.forms').directive('dgFormCheckbox', DgFormCheckbox);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormCheckboxMultiple
+ * @restrict 'ACE'
+ * @scope
+ **/
+function DgFormCheckboxMultiple() {
+    return {
+        restrict: 'ACE',
+        transclude: true,
+        scope: {
+            model: '=ngModel',
+            options: '=',
+            name: '@dgName',
+            html: '&'
+        },
+        templateUrl: 'form-elements/checkbox/multiple.html',
+        link: function(scope) {
+            function indexById(array, id) {
+                for(var i in array) {
+                    if(array[i].id === id) {
+                        return i;
+                    }
+                }
+
+                return -1;
+            }
+
+            function setModel() {
+                var array = [], i;
+                for(i in scope.options) {
+                    if(scope.options[i].selected) {
+                        array.push(scope.options[i].id);
+                    }
+                }
+
+                scope.model = array;
+            }
+
+            function setOptions() {
+                var index, i;
+                for(i in scope.model) {
+                    index = indexById(scope.options, scope.model[i]);
+                    if(index > -1) {
+                        scope.options[index].selected = true;
+                    }
+                }
+            }
+
+            if(!angular.isArray(scope.model)) {
+                scope.model = [];
+            }
+
+            scope.$watch('options', setModel, true);
+            scope.$watch('model', setOptions, true);
+        }
+    };
+}
+
+angular.module('dugun.forms').directive('dgFormCheckboxMultiple', DgFormCheckboxMultiple);
 
 /**
  * @ngdoc directive
@@ -666,92 +753,6 @@ angular.module('dugun.forms')
     .directive('dgFormBooleanSelect', DgFormBooleanSelect);
 
 /**
- * @ngdoc directive
- * @name dugun.forms:dgFormCheckbox
- * @restrict 'ACE'
- * @scope
- **/
-function DgFormCheckbox() {
-    return {
-        restrict: 'ACE',
-        transclude: true,
-        scope: {
-            model: '=ngModel',
-            required: '=ngRequired',
-            trueValue: '=',
-            falseValue: '=',
-            name: '@dgName',
-            label: '@',
-            labelTemplate: '@'
-        },
-        templateUrl: 'form-elements/checkbox/single.html'
-    };
-}
-
-angular.module('dugun.forms').directive('dgFormCheckbox', DgFormCheckbox);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:dgFormCheckboxMultiple
- * @restrict 'ACE'
- * @scope
- **/
-function DgFormCheckboxMultiple() {
-    return {
-        restrict: 'ACE',
-        transclude: true,
-        scope: {
-            model: '=ngModel',
-            options: '=',
-            name: '@dgName',
-            html: '&'
-        },
-        templateUrl: 'form-elements/checkbox/multiple.html',
-        link: function(scope) {
-            function indexById(array, id) {
-                for(var i in array) {
-                    if(array[i].id === id) {
-                        return i;
-                    }
-                }
-
-                return -1;
-            }
-
-            function setModel() {
-                var array = [], i;
-                for(i in scope.options) {
-                    if(scope.options[i].selected) {
-                        array.push(scope.options[i].id);
-                    }
-                }
-
-                scope.model = array;
-            }
-
-            function setOptions() {
-                var index, i;
-                for(i in scope.model) {
-                    index = indexById(scope.options, scope.model[i]);
-                    if(index > -1) {
-                        scope.options[index].selected = true;
-                    }
-                }
-            }
-
-            if(!angular.isArray(scope.model)) {
-                scope.model = [];
-            }
-
-            scope.$watch('options', setModel, true);
-            scope.$watch('model', setOptions, true);
-        }
-    };
-}
-
-angular.module('dugun.forms').directive('dgFormCheckboxMultiple', DgFormCheckboxMultiple);
-
-/**
  * @ngdoc overview
  * @memberof dugun.forms.helpers
  * @description
@@ -779,16 +780,6 @@ DugunFormsUISelectConfig.$inject = [
 angular.module('dugun.forms').config(DugunFormsUISelectConfig);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/checkbox/multiple.html',
-    '<div class="checkbox" ng-repeat="option in options"><label><input type="checkbox" ng-model="option.selected"> <span ng-if="!html()" class="text" ng-bind="option.name"></span> <span ng-if="html()" class="text" ng-bind-html="option.name"></span></label></div>');
-}]);
-
-angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/checkbox/single.html',
-    '<div class="checkbox"><label><input type="checkbox" ng-model="model" ng-true-value="{{ trueValue }}" ng-false-value="{{ falseValue }}" name="{{ name }}" ng-required="{{ required ? true : false }}"> <span ng-if="!labelTemplate">{{ label }}</span> <span ng-if="labelTemplate" ng-include="labelTemplate"></span></label></div>');
-}]);
-
-angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/boolean/boolean-select.html',
     '<dg-form-select2 ng-model="model" options="options" placeholder="{{ attrs.placeholder }}" allow-clear="{{ allowClear }}" ng-required="required ? true : false" search-enabled="false"></dg-form-select2>');
 }]);
@@ -809,13 +800,23 @@ angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
+  $templateCache.put('form-elements/checkbox/multiple.html',
+    '<div class="checkbox" ng-repeat="option in options"><label><input type="checkbox" ng-model="option.selected"> <span ng-if="!html()" class="text" ng-bind="option.name"></span> <span ng-if="html()" class="text" ng-bind-html="option.name"></span></label></div>');
+}]);
+
+angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
+  $templateCache.put('form-elements/checkbox/single.html',
+    '<div class="checkbox"><label><input type="checkbox" ng-model="model" ng-true-value="{{ trueValue }}" ng-false-value="{{ falseValue }}" name="{{ name }}" ng-required="{{ required ? true : false }}"> <span ng-if="!labelTemplate">{{ label }}</span> <span ng-if="labelTemplate" ng-include="labelTemplate"></span></label></div>');
+}]);
+
+angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/datetime/datetime.html',
     '<div class="row"><dg-form-date class="col-xs-12 col-md-6" ng-model="date" ng-required="required"></dg-form-date><dg-form-time class="col-xs-12 col-md-6" ng-model="time" ng-required="required"></dg-form-time></div>');
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
   $templateCache.put('form-elements/html/template.html',
-    '<text-angular ng-model="$parent.model" ta-toolbar="taToolbar" ng-required="required" ng-attr-maxlength="{{ attrs.maxlength || undefined }}" ng-readonly="readonly" ng-disabled="ngDisabled"></text-angular>');
+    '<text-angular ng-model="$parent.model" ta-toolbar="taToolbar" ta-target-toolbars="{{ taTargetToolbars || \'htmlcontenttools,statictoolbar\' }}" ng-required="required" ng-attr-maxlength="{{ attrs.maxlength || undefined }}" ng-readonly="readonly" ng-disabled="ngDisabled"></text-angular>');
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {

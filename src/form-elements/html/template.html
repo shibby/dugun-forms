@@ -1,6 +1,7 @@
 <text-angular
     ng-model="$parent.model"
     ta-toolbar="taToolbar"
+    ta-target-toolbars="{{ taTargetToolbars || 'htmlcontenttools,statictoolbar' }}"
     ng-required="required"
     ng-attr-maxlength="{{ attrs.maxlength || undefined }}"
     ng-readonly="readonly"
