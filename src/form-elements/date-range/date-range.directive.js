@@ -11,8 +11,6 @@ function DgFormDateRange(moment) {
             modelStart: '=ngModelStart',
             modelEnd: '=ngModelEnd',
             required: '=ngRequired',
-            min: '=',
-            max: '=',
             options: '=',
             clearable: '='
         },
