@@ -476,134 +476,6 @@ angular.module('dugun.forms').directive('dgFormDateTime', DgFormDateTime);
 
 /**
  * @ngdoc directive
- * @name dugun.forms:DgFormDateRange
- * @restrict 'E'
- * @scope
- **/
-function DgFormDateRange(moment) {
-    return {
-        restrict: 'AEC',
-        scope: {
-            modelStart: '=ngModelStart',
-            modelEnd: '=ngModelEnd',
-            required: '=ngRequired',
-            options: '=',
-            clearable: '='
-        },
-        templateUrl: 'form-elements/date-range/date-range.html',
-        link: function(scope, element, attrs) {
-            scope.attrs = attrs;
-            scope.dates = {startDate: null, endDate: null};
-
-            function datesChanged(newValue) {
-                if(!newValue) return;
-                if(newValue.startDate) {
-                    scope.modelStart = newValue.startDate.format('YYYY-MM-DD');
-                } else {
-                    delete scope.modelStart;
-                }
-                if(newValue.endDate) {
-                    scope.modelEnd = newValue.endDate.format('YYYY-MM-DD');
-                } else {
-                    delete scope.modelEnd;
-                }
-            }
-
-            // Initialize scope.dates with values from model.
-            function init() {
-                if(
-                    (scope.modelStart && !scope.dates.startDate) ||
-                    (scope.modelEnd && !scope.dates.endDate)
-                ) {
-                    scope.dates = {
-                        startDate: moment(scope.modelStart),
-                        endDate: moment(scope.modelEnd),
-                    };
-                }
-
-                if(!scope.modelStart || !scope.modelEnd) {
-                    scope.dates = {startDate: null, endDate: null};
-                }
-            }
-
-            init();
-            scope.$watch('modelStart', init);
-            scope.$watch('modelEnd', init);
-            scope.$watch('dates', datesChanged, true);
-        }
-    };
-}
-
-DgFormDateRange.$inject = [
-    'moment',
-];
-
-angular.module('dugun.forms').directive('dgFormDateRange', DgFormDateRange);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:dgFormBoolean
- * @restrict 'ACE'
- * @scope
- **/
-function DgFormBoolean() {
-    return {
-        restrict: 'ACE',
-        scope: {
-            model: '=ngModel',
-            allowClear: '@',
-            labelTrue: '@',
-            labelFalse: '@'
-        },
-        templateUrl: 'form-elements/boolean/boolean.html'
-    };
-}
-
-angular.module('dugun.forms')
-    .directive('dgFormBoolean', DgFormBoolean);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:dgFormBooleanSelect
- * @restrict 'ACE'
- * @scope
- **/
-function DgFormBooleanSelect() {
-    return {
-        restrict: 'ACE',
-        scope: {
-            model: '=ngModel',
-            allowClear: '@',
-            labelTrue: '@',
-            labelFalse: '@',
-            valueTrue: '&',
-            valueFalse: '&',
-            required: '=ngRequired'
-        },
-        templateUrl: 'form-elements/boolean/boolean-select.html',
-        link: function(scope, element, attrs) {
-            var options = [];
-
-            options.push({
-                id: typeof scope.valueTrue() === 'undefined' ? true : scope.valueTrue(),
-                name: scope.labelTrue
-            });
-            options.push({
-                id: typeof scope.valueFalse() === 'undefined' ? false : scope.valueFalse(),
-                name: scope.labelFalse
-            });
-
-            scope.options = options;
-            scope.attrs = attrs;
-        }
-    };
-}
-
-angular.module('dugun.forms')
-    .directive('dgFormBooleanSelect', DgFormBooleanSelect);
-
-/**
- * @ngdoc directive
  * @name dugun.forms:dgFormCheckbox
  * @restrict 'ACE'
  * @scope
@@ -687,6 +559,134 @@ function DgFormCheckboxMultiple() {
 }
 
 angular.module('dugun.forms').directive('dgFormCheckboxMultiple', DgFormCheckboxMultiple);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormBoolean
+ * @restrict 'ACE'
+ * @scope
+ **/
+function DgFormBoolean() {
+    return {
+        restrict: 'ACE',
+        scope: {
+            model: '=ngModel',
+            allowClear: '@',
+            labelTrue: '@',
+            labelFalse: '@'
+        },
+        templateUrl: 'form-elements/boolean/boolean.html'
+    };
+}
+
+angular.module('dugun.forms')
+    .directive('dgFormBoolean', DgFormBoolean);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormBooleanSelect
+ * @restrict 'ACE'
+ * @scope
+ **/
+function DgFormBooleanSelect() {
+    return {
+        restrict: 'ACE',
+        scope: {
+            model: '=ngModel',
+            allowClear: '@',
+            labelTrue: '@',
+            labelFalse: '@',
+            valueTrue: '&',
+            valueFalse: '&',
+            required: '=ngRequired'
+        },
+        templateUrl: 'form-elements/boolean/boolean-select.html',
+        link: function(scope, element, attrs) {
+            var options = [];
+
+            options.push({
+                id: typeof scope.valueTrue() === 'undefined' ? true : scope.valueTrue(),
+                name: scope.labelTrue
+            });
+            options.push({
+                id: typeof scope.valueFalse() === 'undefined' ? false : scope.valueFalse(),
+                name: scope.labelFalse
+            });
+
+            scope.options = options;
+            scope.attrs = attrs;
+        }
+    };
+}
+
+angular.module('dugun.forms')
+    .directive('dgFormBooleanSelect', DgFormBooleanSelect);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:DgFormDateRange
+ * @restrict 'E'
+ * @scope
+ **/
+function DgFormDateRange(moment) {
+    return {
+        restrict: 'AEC',
+        scope: {
+            modelStart: '=ngModelStart',
+            modelEnd: '=ngModelEnd',
+            required: '=ngRequired',
+            options: '=',
+            clearable: '='
+        },
+        templateUrl: 'form-elements/date-range/date-range.html',
+        link: function(scope, element, attrs) {
+            scope.attrs = attrs;
+            scope.dates = {startDate: null, endDate: null};
+
+            function datesChanged(newValue) {
+                if(!newValue) return;
+                if(newValue.startDate) {
+                    scope.modelStart = newValue.startDate.format('YYYY-MM-DD');
+                } else {
+                    delete scope.modelStart;
+                }
+                if(newValue.endDate) {
+                    scope.modelEnd = newValue.endDate.format('YYYY-MM-DD');
+                } else {
+                    delete scope.modelEnd;
+                }
+            }
+
+            // Initialize scope.dates with values from model.
+            function init() {
+                if(
+                    (scope.modelStart && !scope.dates.startDate) ||
+                    (scope.modelEnd && !scope.dates.endDate)
+                ) {
+                    scope.dates = {
+                        startDate: moment(scope.modelStart),
+                        endDate: moment(scope.modelEnd),
+                    };
+                }
+
+                if(!scope.modelStart || !scope.modelEnd) {
+                    scope.dates = {startDate: null, endDate: null};
+                }
+            }
+
+            init();
+            scope.$watch('modelStart', init);
+            scope.$watch('modelEnd', init);
+            scope.$watch('dates', datesChanged, true);
+        }
+    };
+}
+
+DgFormDateRange.$inject = [
+    'moment',
+];
+
+angular.module('dugun.forms').directive('dgFormDateRange', DgFormDateRange);
 
 /**
  * @ngdoc directive
@@ -782,13 +782,8 @@ angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/checkbox/multiple.html',
-    '<div class="checkbox" ng-repeat="option in options"><label><input type="checkbox" ng-model="option.selected"> <span ng-if="!html()" class="text" ng-bind="option.name"></span> <span ng-if="html()" class="text" ng-bind-html="option.name"></span></label></div>');
-}]);
-
-angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/checkbox/single.html',
-    '<div class="checkbox"><label><input type="checkbox" ng-model="model" ng-true-value="{{ trueValue }}" ng-false-value="{{ falseValue }}" name="{{ name }}" ng-required="{{ required ? true : false }}"> <span ng-if="!labelTemplate">{{ label }}</span> <span ng-if="labelTemplate" ng-include="labelTemplate"></span></label></div>');
+  $templateCache.put('form-elements/date-range/date-range.html',
+    '<input date-range-picker class="form-control full-width date-picker" type="text" ng-model="dates" options="options" clearable="clearable" ng-required="required" ng-attr-form="{{ attrs.form ? attrs.form : undefined }}" ng-attr-name="{{ attrs.dgName ? attrs.dgName : undefined }}" ng-attr-placeholder="{{ attrs.placeholder || undefined }}" ng-attr-id="{{ attrs.dgId || undefined }}">');
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
@@ -802,8 +797,13 @@ angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/date-range/date-range.html',
-    '<input date-range-picker class="form-control full-width date-picker" type="text" ng-model="dates" options="options" clearable="clearable" ng-required="required" ng-attr-form="{{ attrs.form ? attrs.form : undefined }}" ng-attr-name="{{ attrs.dgName ? attrs.dgName : undefined }}" ng-attr-placeholder="{{ attrs.placeholder || undefined }}" ng-attr-id="{{ attrs.dgId || undefined }}">');
+  $templateCache.put('form-elements/checkbox/multiple.html',
+    '<div class="checkbox" ng-repeat="option in options"><label><input type="checkbox" ng-model="option.selected"> <span ng-if="!html()" class="text" ng-bind="option.name"></span> <span ng-if="html()" class="text" ng-bind-html="option.name"></span></label></div>');
+}]);
+
+angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
+  $templateCache.put('form-elements/checkbox/single.html',
+    '<div class="checkbox"><label><input type="checkbox" ng-model="model" ng-true-value="{{ trueValue }}" ng-false-value="{{ falseValue }}" name="{{ name }}" ng-required="{{ required ? true : false }}"> <span ng-if="!labelTemplate">{{ label }}</span> <span ng-if="labelTemplate" ng-include="labelTemplate"></span></label></div>');
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
