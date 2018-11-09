@@ -542,64 +542,65 @@ angular.module('dugun.forms').directive('dgFormDateRange', DgFormDateRange);
 
 /**
  * @ngdoc directive
- * @name dugun.forms:DgFormDate
- * @restrict 'E'
+ * @name dugun.forms:dgFormBoolean
+ * @restrict 'ACE'
  * @scope
  **/
-function DgFormDate(moment) {
+function DgFormBoolean() {
     return {
-        restrict: 'AEC',
+        restrict: 'ACE',
         scope: {
             model: '=ngModel',
-            required: '=ngRequired',
-            placeholder: '@',
-            id: '@dgId',
-            ngChange: '&'
+            allowClear: '@',
+            labelTrue: '@',
+            labelFalse: '@'
         },
-        templateUrl: 'form-elements/date/date.html',
+        templateUrl: 'form-elements/boolean/boolean.html'
+    };
+}
+
+angular.module('dugun.forms')
+    .directive('dgFormBoolean', DgFormBoolean);
+
+/**
+ * @ngdoc directive
+ * @name dugun.forms:dgFormBooleanSelect
+ * @restrict 'ACE'
+ * @scope
+ **/
+function DgFormBooleanSelect() {
+    return {
+        restrict: 'ACE',
+        scope: {
+            model: '=ngModel',
+            allowClear: '@',
+            labelTrue: '@',
+            labelFalse: '@',
+            valueTrue: '&',
+            valueFalse: '&',
+            required: '=ngRequired'
+        },
+        templateUrl: 'form-elements/boolean/boolean-select.html',
         link: function(scope, element, attrs) {
+            var options = [];
+
+            options.push({
+                id: typeof scope.valueTrue() === 'undefined' ? true : scope.valueTrue(),
+                name: scope.labelTrue
+            });
+            options.push({
+                id: typeof scope.valueFalse() === 'undefined' ? false : scope.valueFalse(),
+                name: scope.labelFalse
+            });
+
+            scope.options = options;
             scope.attrs = attrs;
-
-            function dateChanged(newValue) {
-                if(!newValue) return;
-                if(newValue) {
-                    scope.model = moment(newValue).format('YYYY-MM-DD');
-                } else {
-                    delete scope.model;
-                }
-            }
-
-            // Initialize scope.dates with values from model.
-            function init() {
-                if(!scope.date) {
-                    scope.date = null;
-                }
-
-                if(angular.isDate(scope.model)) {
-                    scope.model = moment(scope.model).format('YYYY-MM-DD');
-                }
-
-                if(scope.model && !scope.date) {
-                    scope.date = new Date(scope.model);
-                }
-
-                if(angular.isFunction(scope.ngChange)) {
-                    scope.ngChange({ model: scope.date });
-                }
-            }
-
-            init();
-            scope.$watch('date', dateChanged);
-            scope.$watch('model', init);
         }
     };
 }
 
-DgFormDate.$inject = [
-    'moment',
-];
-
-angular.module('dugun.forms').directive('dgFormDate', DgFormDate);
+angular.module('dugun.forms')
+    .directive('dgFormBooleanSelect', DgFormBooleanSelect);
 
 /**
  * @ngdoc directive
@@ -689,65 +690,64 @@ angular.module('dugun.forms').directive('dgFormCheckboxMultiple', DgFormCheckbox
 
 /**
  * @ngdoc directive
- * @name dugun.forms:dgFormBoolean
- * @restrict 'ACE'
+ * @name dugun.forms:DgFormDate
+ * @restrict 'E'
  * @scope
  **/
-function DgFormBoolean() {
+function DgFormDate(moment) {
     return {
-        restrict: 'ACE',
+        restrict: 'AEC',
         scope: {
             model: '=ngModel',
-            allowClear: '@',
-            labelTrue: '@',
-            labelFalse: '@'
+            required: '=ngRequired',
+            placeholder: '@',
+            id: '@dgId',
+            ngChange: '&'
         },
-        templateUrl: 'form-elements/boolean/boolean.html'
-    };
-}
-
-angular.module('dugun.forms')
-    .directive('dgFormBoolean', DgFormBoolean);
-
-/**
- * @ngdoc directive
- * @name dugun.forms:dgFormBooleanSelect
- * @restrict 'ACE'
- * @scope
- **/
-function DgFormBooleanSelect() {
-    return {
-        restrict: 'ACE',
-        scope: {
-            model: '=ngModel',
-            allowClear: '@',
-            labelTrue: '@',
-            labelFalse: '@',
-            valueTrue: '&',
-            valueFalse: '&',
-            required: '=ngRequired'
-        },
-        templateUrl: 'form-elements/boolean/boolean-select.html',
+        templateUrl: 'form-elements/date/date.html',
         link: function(scope, element, attrs) {
-            var options = [];
-
-            options.push({
-                id: typeof scope.valueTrue() === 'undefined' ? true : scope.valueTrue(),
-                name: scope.labelTrue
-            });
-            options.push({
-                id: typeof scope.valueFalse() === 'undefined' ? false : scope.valueFalse(),
-                name: scope.labelFalse
-            });
-
-            scope.options = options;
             scope.attrs = attrs;
+
+            function dateChanged(newValue) {
+                if(!newValue) return;
+                if(newValue) {
+                    scope.model = moment(newValue).format('YYYY-MM-DD');
+                } else {
+                    delete scope.model;
+                }
+            }
+
+            // Initialize scope.dates with values from model.
+            function init() {
+                if(!scope.date) {
+                    scope.date = null;
+                }
+
+                if(angular.isDate(scope.model)) {
+                    scope.model = moment(scope.model).format('YYYY-MM-DD');
+                }
+
+                if(scope.model && !scope.date) {
+                    scope.date = new Date(scope.model);
+                }
+
+                if(angular.isFunction(scope.ngChange)) {
+                    scope.ngChange({ model: scope.date });
+                }
+            }
+
+            init();
+            scope.$watch('date', dateChanged);
+            scope.$watch('model', init);
         }
     };
 }
 
-angular.module('dugun.forms')
-    .directive('dgFormBooleanSelect', DgFormBooleanSelect);
+DgFormDate.$inject = [
+    'moment',
+];
+
+angular.module('dugun.forms').directive('dgFormDate', DgFormDate);
 
 /**
  * @ngdoc overview
@@ -777,13 +777,8 @@ DugunFormsUISelectConfig.$inject = [
 angular.module('dugun.forms').config(DugunFormsUISelectConfig);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/boolean/boolean-select.html',
-    '<dg-form-select2 ng-model="model" options="options" placeholder="{{ attrs.placeholder }}" allow-clear="{{ allowClear }}" ng-required="required ? true : false" search-enabled="false"></dg-form-select2>');
-}]);
-
-angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/boolean/boolean.html',
-    '<label class="btn btn-default" ng-model="model" uncheckable="{{ allowClear }}" uib-btn-radio="true" ng-bind="labelTrue"></label><label class="btn btn-default" ng-model="model" uncheckable="{{ allowClear }}" uib-btn-radio="false" ng-bind="labelFalse"></label>');
+  $templateCache.put('form-elements/date/date.html',
+    '<input type="text" class="form-control" ng-model="date" ng-attr-id="{{ id || \'\' }}" uib-datepicker-popup ng-click="datepickerPopupOpen = true" is-open="datepickerPopupOpen" ng-required="required" ng-attr-form="{{ attrs.form ? attrs.form : undefined }}" placeholder="{{ placeholder || \'\' }}">');
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
@@ -797,8 +792,13 @@ angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
-  $templateCache.put('form-elements/date/date.html',
-    '<input type="text" class="form-control" ng-model="date" ng-attr-id="{{ id || \'\' }}" uib-datepicker-popup ng-click="datepickerPopupOpen = true" is-open="datepickerPopupOpen" ng-required="required" ng-attr-form="{{ attrs.form ? attrs.form : undefined }}" placeholder="{{ placeholder || \'\' }}">');
+  $templateCache.put('form-elements/boolean/boolean-select.html',
+    '<dg-form-select2 ng-model="model" options="options" placeholder="{{ attrs.placeholder }}" allow-clear="{{ allowClear }}" ng-required="required ? true : false" search-enabled="false"></dg-form-select2>');
+}]);
+
+angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
+  $templateCache.put('form-elements/boolean/boolean.html',
+    '<label class="btn btn-default" ng-model="model" uncheckable="{{ allowClear }}" uib-btn-radio="true" ng-bind="labelTrue"></label><label class="btn btn-default" ng-model="model" uncheckable="{{ allowClear }}" uib-btn-radio="false" ng-bind="labelFalse"></label>');
 }]);
 
 angular.module('dugun.forms').run(['$templateCache', function($templateCache) {
