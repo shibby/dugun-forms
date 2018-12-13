@@ -13,11 +13,15 @@ function DgFormDate(moment) {
             required: '=ngRequired',
             placeholder: '@',
             id: '@dgId',
-            ngChange: '&'
+            ngChange: '&',
+            dateOptions: '@'
         },
         templateUrl: 'form-elements/date/date.html',
         link: function(scope, element, attrs) {
             scope.attrs = attrs;
+            if (!scope.dateOptions) {
+                scope.dateOptions = {}
+            }
 
             if(!scope.format){
                 scope.format = 'YYYY-MM-DD';
