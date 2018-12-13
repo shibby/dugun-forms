@@ -14,22 +14,27 @@ function DgFormDate(moment) {
             placeholder: '@',
             id: '@dgId',
             ngChange: '&',
-            dateOptions: '@'
+            minDate: '=',
+            maxDate: '=',
         },
         templateUrl: 'form-elements/date/date.html',
         link: function(scope, element, attrs) {
             scope.attrs = attrs;
-            if (!scope.dateOptions) {
-                scope.dateOptions = {}
+            scope.dateOptions = {};
+            if (scope.minDate) {
+                scope.dateOptions.minDate = scope.minDate;
+            }
+            if (scope.maxDate) {
+                scope.dateOptions.maxDate = scope.maxDate;
             }
 
-            if(!scope.format){
+            if (!scope.format) {
                 scope.format = 'YYYY-MM-DD';
             }
 
             function dateChanged(newValue) {
-                if(!newValue) return;
-                if(newValue) {
+                if (!newValue) return;
+                if (newValue) {
                     scope.model = moment(newValue).format(scope.format);
                 } else {
                     delete scope.model;
@@ -38,19 +43,19 @@ function DgFormDate(moment) {
 
             // Initialize scope.dates with values from model.
             function init() {
-                if(!scope.date) {
+                if (!scope.date) {
                     scope.date = null;
                 }
 
-                if(angular.isDate(scope.model)) {
+                if (angular.isDate(scope.model)) {
                     scope.model = moment(scope.model).format('YYYY-MM-DD');
                 }
 
-                if(scope.model && !scope.date) {
+                if (scope.model && !scope.date) {
                     scope.date = new Date(scope.model);
                 }
 
-                if(angular.isFunction(scope.ngChange)) {
+                if (angular.isFunction(scope.ngChange)) {
                     scope.ngChange({ model: scope.date });
                 }
             }
