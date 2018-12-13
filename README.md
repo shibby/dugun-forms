@@ -48,3 +48,11 @@ $scope.dates = {
     endDate: moment()
 };
 ```
+
+
+```html
+<dg-form-date
+  ng-model="date"
+  format="DD-MM-YYYY"
+></dg-form-date>
+```
