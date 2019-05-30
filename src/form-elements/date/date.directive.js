@@ -16,6 +16,7 @@ function DgFormDate(moment) {
             ngChange: '&',
             minDate: '=',
             maxDate: '=',
+            name: '@',
         },
         templateUrl: 'form-elements/date/date.html',
         link: function(scope, element, attrs) {
